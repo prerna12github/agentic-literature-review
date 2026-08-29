@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Project data (downloaded PDFs and generated results — don't commit these)
+step1_search_pipeline/papers/
+step1_search_pipeline/results.json
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
