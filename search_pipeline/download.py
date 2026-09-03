@@ -1,13 +1,3 @@
-"""
-Step 1b: Download open-access PDFs
-------------------------------------
-Given a paper dict from search.py (with an `open_access_pdf` url),
-downloads the PDF to a local folder so it can be read/extracted later.
-
-Papers with no open-access PDF are skipped (can't legally download those
-without institutional access, so we just note them as "unavailable").
-"""
-
 import requests
 import os
 import re
