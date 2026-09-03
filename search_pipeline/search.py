@@ -1,5 +1,6 @@
-import requests
 import time
+
+import requests
 
 SEMANTIC_SCHOLAR_API = "https://api.semanticscholar.org/graph/v1/paper/search"
 
@@ -8,7 +9,7 @@ FIELDS = "title,abstract,year,authors,url,openAccessPdf,citationCount"
 
 
 def search_papers(query: str, limit: int = 10, min_year: int = None) -> list[dict]:
-  
+
     params = {
         "query": query,
         "limit": limit,
@@ -31,15 +32,17 @@ def search_papers(query: str, limit: int = 10, min_year: int = None) -> list[dic
         if min_year and item.get("year") and item["year"] < min_year:
             continue
 
-        papers.append({
-            "title": item.get("title"),
-            "abstract": item.get("abstract"),
-            "year": item.get("year"),
-            "authors": [a.get("name") for a in item.get("authors", [])],
-            "url": item.get("url"),
-            "open_access_pdf": (item.get("openAccessPdf") or {}).get("url"),
-            "citation_count": item.get("citationCount", 0),
-        })
+        papers.append(
+            {
+                "title": item.get("title"),
+                "abstract": item.get("abstract"),
+                "year": item.get("year"),
+                "authors": [a.get("name") for a in item.get("authors", [])],
+                "url": item.get("url"),
+                "open_access_pdf": (item.get("openAccessPdf") or {}).get("url"),
+                "citation_count": item.get("citationCount", 0),
+            }
+        )
 
     return papers
 
