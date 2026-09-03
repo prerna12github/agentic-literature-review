@@ -9,7 +9,7 @@ from. Later, when the Reader Agent pulls out a claim, we can say
 "this came from page 4" instead of just "this paper said so".
 """
 
-import pymupdf  # this is the new import name for the library formerly called `fitz`
+import pymupdf
 import os
 
 

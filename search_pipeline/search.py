@@ -16,13 +16,13 @@ def search_papers(query: str, limit: int = 10, min_year: int = None) -> list[dic
         "fields": FIELDS,
     }
 
-    response = requests.get(SEMANTIC_SCHOLAR_API, params=params, timeout=15)
+    response = requests.get(SEMANTIC_SCHOLAR_API, params=params, timeout=25)
 
     if response.status_code == 429:
         # Semantic Scholar free tier rate-limits aggressively — back off and retry once
         print("Rate limited, waiting 5s and retrying...")
-        time.sleep(5)
-        response = requests.get(SEMANTIC_SCHOLAR_API, params=params, timeout=15)
+        time.sleep(20)
+        response = requests.get(SEMANTIC_SCHOLAR_API, params=params, timeout=25)
 
     response.raise_for_status()
     data = response.json()
