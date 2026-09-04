@@ -8,18 +8,22 @@ Returns a clean list of paper dicts with: title, abstract, year, authors,
 url, and open-access PDF link (if available).
 """
 
-import requests
-import time
 import os
+import time
+
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()  # reads a .env file in the project folder (if present) into os.environ
 
 SEMANTIC_SCHOLAR_API = "https://api.semanticscholar.org/graph/v1/paper/search"
 
 # Fields we want back from the API for each paper
 FIELDS = "title,abstract,year,authors,url,openAccessPdf,citationCount"
 
-# Optional: if you set an S2_API_KEY environment variable, requests get a much
-# higher rate limit (Semantic Scholar's free API key is instant to get at
-# https://www.semanticscholar.org/product/api#api-key — no cost, just an email form).
+# If you have a Semantic Scholar API key, put it in a .env file in the project
+# root as: S2_API_KEY=your-key-here
+# (or export it in your shell — either way works, load_dotenv() above handles the .env case)
 API_KEY = os.environ.get("S2_API_KEY")
 
 
@@ -41,23 +45,24 @@ def search_papers(query: str, limit: int = 10, min_year: int = None) -> list[dic
         "fields": FIELDS,
     }
 
-    # Semantic Scholar's unauthenticated tier is shared across everyone hitting it
-    # globally, so 429 (rate limited) happens often and a single short wait is
-    # rarely enough. We retry with "exponential backoff" — each wait is longer
-    # than the last (5s, 10s, 20s, 40s...) since the limit usually clears within
-    # a minute or so.
+    # With an API key, rate limits are per-key instead of shared globally, so
+    # 429s should be rare — but we keep the backoff retry as a safety net.
     max_retries = 5
-    wait_seconds = 5
+    wait_seconds = 8
     headers = {"x-api-key": API_KEY} if API_KEY else {}
 
     for attempt in range(max_retries):
-        response = requests.get(SEMANTIC_SCHOLAR_API, params=params, headers=headers, timeout=15)
+        response = requests.get(
+            SEMANTIC_SCHOLAR_API, params=params, headers=headers, timeout=15
+        )
 
         if response.status_code != 429:
             break  # success, or a different error we'll raise below
 
-        print(f"Rate limited (attempt {attempt + 1}/{max_retries}), "
-              f"waiting {wait_seconds}s...")
+        print(
+            f"Rate limited (attempt {attempt + 1}/{max_retries}), "
+            f"waiting {wait_seconds}s before retrying..."
+        )
         time.sleep(wait_seconds)
         wait_seconds *= 2  # double the wait each time
 
@@ -69,22 +74,24 @@ def search_papers(query: str, limit: int = 10, min_year: int = None) -> list[dic
         if min_year and item.get("year") and item["year"] < min_year:
             continue
 
-        papers.append({
-            "title": item.get("title"),
-            "abstract": item.get("abstract"),
-            "year": item.get("year"),
-            "authors": [a.get("name") for a in item.get("authors", [])],
-            "url": item.get("url"),
-            "open_access_pdf": (item.get("openAccessPdf") or {}).get("url"),
-            "citation_count": item.get("citationCount", 0),
-        })
+        papers.append(
+            {
+                "title": item.get("title"),
+                "abstract": item.get("abstract"),
+                "year": item.get("year"),
+                "authors": [a.get("name") for a in item.get("authors", [])],
+                "url": item.get("url"),
+                "open_access_pdf": (item.get("openAccessPdf") or {}).get("url"),
+                "citation_count": item.get("citationCount", 0),
+            }
+        )
 
     return papers
 
 
 if __name__ == "__main__":
     # quick manual test
-    results = search_papers("retrieval augmented generation hallucination", limit=5)
+    results = search_papers("quantum computing", limit=5)
     for i, p in enumerate(results, 1):
         print(f"\n[{i}] {p['title']} ({p['year']})")
         print(f"    Citations: {p['citation_count']}")

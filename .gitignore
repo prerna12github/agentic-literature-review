@@ -14,3 +14,4 @@ step1_search_pipeline/results.json
 
 # OS
 .DS_Store
+.env
