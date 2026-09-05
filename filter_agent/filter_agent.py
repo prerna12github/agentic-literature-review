@@ -26,7 +26,7 @@ load_dotenv()
 # Which Gemini model to use. gemini-2.5-flash was closed to new users, so we
 # default to gemini-2.5-flash-lite instead — still on the free tier, with a
 # generous daily limit, and cheap enough that this triage step barely uses it.
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash-lite")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
