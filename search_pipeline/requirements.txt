@@ -1,3 +1,0 @@
-requests
-pymupdf
-python-dotenv
