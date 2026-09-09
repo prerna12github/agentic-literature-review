@@ -1,0 +1,4 @@
+requests
+pymupdf
+python-dotenv
+google-genai

@@ -1,21 +1,3 @@
-"""
-Step 2: Filter Agent
-----------------------
-Takes the papers found by Step 1 (search/download/extract) and a research
-question, then:
-
-  1. Asks an LLM (Google Gemini) to score each paper's relevance to the
-     question and give a one-line reason for the score.
-  2. Shows you the ranked list.
-  3. PAUSES and waits for you to approve, remove specific papers, or approve
-     all — before anything expensive (like full-text reading in Step 3)
-     happens.
-
-This is the "human-in-the-loop checkpoint" mentioned in the project docs:
-a bad automatic decision here would silently corrupt everything downstream,
-so a person reviews it first.
-"""
-
 import json
 import os
 from dotenv import load_dotenv
@@ -23,26 +5,12 @@ from google import genai
 
 load_dotenv()
 
-# Which Gemini model to use. Gemini 2.5 Flash has a generous free tier
-# (no credit card needed) — good fit for this kind of triage/scoring task.
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 
 def score_papers_with_llm(papers: list[dict], research_question: str) -> list[dict]:
-    """
-    Sends all paper titles/abstracts to the LLM in one call, and asks it to
-    score each one's relevance to the research question.
-
-    Args:
-        papers: list of paper dicts (from Step 1's results.json)
-        research_question: the user's actual research question
-
-    Returns:
-        The same list of papers, each with two new keys added:
-        'relevance_score' (1-10) and 'relevance_reason' (short explanation).
-    """
     # Build a compact numbered list of papers for the prompt — we only send
     # title + abstract, not full text, since this step is just triage.
     paper_summaries = []
@@ -114,17 +82,6 @@ def show_ranked_list(papers: list[dict]) -> None:
 
 
 def human_checkpoint(ranked_papers: list[dict]) -> list[dict]:
-    """
-    THE HUMAN-IN-THE-LOOP STEP.
-
-    Shows the ranked list (already printed by show_ranked_list) and asks the
-    user what to do next:
-      - press Enter / type 'y'  -> approve all papers as-is
-      - type comma-separated numbers (e.g. "2,5,7") -> REMOVE those papers
-      - type 'q' -> quit without approving anything
-
-    Returns the final approved list of papers.
-    """
     print("\n" + "-" * 70)
     print("Approve this list, or remove papers you don't want carried forward.")
     print("  - Press Enter (or type 'y') to approve ALL papers as shown above")
