@@ -1,14 +1,3 @@
-"""
-Step 1c: Extract text from PDFs (with page tracking)
---------------------------------------------------------
-This is the piece that makes citation traceability possible later on.
-
-Instead of just dumping "all the text" from a PDF, we break it into
-paragraph-sized chunks and remember EXACTLY which page each chunk came
-from. Later, when the Reader Agent pulls out a claim, we can say
-"this came from page 4" instead of just "this paper said so".
-"""
-
 import pymupdf
 import os
 
