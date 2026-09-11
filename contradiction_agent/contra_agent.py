@@ -1,23 +1,3 @@
-"""
-Step 4: Contradiction Agent
-------------------------------
-Takes the claims extracted in Step 3 (claims_results.json) — each claim
-already tagged with its source paper and page number — and figures out
-which claims are actually talking about the SAME sub-topic, then asks the
-LLM whether those claims agree or conflict with each other.
-
-This happens in two stages:
-
-  1. GROUPING (using embeddings): turn every claim into a list of numbers
-     ("embedding") that captures its meaning, then group claims whose
-     embeddings are close together (i.e. they're about the same sub-topic).
-     This is NOT an LLM call — it's fast, cheap math (cosine similarity).
-
-  2. CHECKING (using the LLM): for every group that has claims from more
-     than one paper, ask the LLM: "do these agree or conflict, and why?"
-     This IS an LLM call, but only run on groups worth checking — not
-     every possible pair of claims.
-"""
 
 import json
 import os
