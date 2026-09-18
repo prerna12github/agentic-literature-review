@@ -12,7 +12,7 @@ load_dotenv()
 log = logging.getLogger(__name__)
 
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
-EMBED_MODEL = os.environ.get("GEMINI_EMBED_MODEL", "gemini-embedding-2")
+EMBED_MODEL = os.environ.get("GEMINI_EMBED_MODEL", "gemini-embedding-001")
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:
