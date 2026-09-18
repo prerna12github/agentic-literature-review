@@ -221,6 +221,10 @@ def _save_verdict_cache(cache: dict) -> None:
     with open(VERDICT_CACHE_FILE, "w") as f:
         json.dump(cache, f)
 
+def _involves_multiple_papers(group: list[dict]) -> bool:
+    """Only worth an LLM contradiction-check if claims come from different papers."""
+    return len({c["paper_title"] for c in group}) > 1        
+
 
 def check_group_for_contradiction(group: list[dict]) -> dict:
     """
