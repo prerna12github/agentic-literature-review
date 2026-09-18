@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 # FIXED: real model name (gemini-3.5-flash-lite does not exist).
 # Check .env too — a stale GEMINI_MODEL there overrides this default.
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:

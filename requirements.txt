@@ -2,3 +2,4 @@ requests
 pymupdf
 python-dotenv
 google-genai
+sentence-transformers

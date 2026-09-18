@@ -17,3 +17,6 @@ step1_search_pipeline/results.json
 .env
 .env.*
 !.env.example
+
+embedding_cache.json
+verdict_cache.json
