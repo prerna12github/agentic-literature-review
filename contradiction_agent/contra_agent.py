@@ -6,6 +6,7 @@ import logging
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from sentence_transformers import SentenceTransformer
 
 load_dotenv()
 
@@ -51,34 +52,21 @@ def flatten_claims(papers: list[dict]) -> list[dict]:
     return flat
 
 
+def _get_embedder() -> SentenceTransformer:
+    global _embedder
+    if _embedder is None:
+        _embedder = SentenceTransformer("all-MiniLM-L6-v2")
+    return _embedder
+
+
 def get_embeddings(texts: list[str]) -> list[list[float]]:
-   
-    all_embeddings = []
-
-    for i in range(0, len(texts), EMBED_BATCH_SIZE):
-        batch = texts[i:i + EMBED_BATCH_SIZE]
-        try:
-            response = client.models.embed_content(
-                model=EMBED_MODEL,
-                contents=batch,
-            )
-            all_embeddings.extend(e.values for e in response.embeddings)
-        except Exception as e:
-            log.error("Embedding batch %d failed: %s", i // EMBED_BATCH_SIZE, e)
-            raise
-
-        log.info("  Embedded %d/%d claims...", min(i + EMBED_BATCH_SIZE, len(texts)), len(texts))
-        if i + EMBED_BATCH_SIZE < len(texts):
-            time.sleep(BATCH_DELAY_SECONDS)
-
-    return all_embeddings
-
+  
+    model = _get_embedder()
+    vectors = model.encode(texts, show_progress_bar=True, normalize_embeddings=True)
+    return [v.tolist() for v in vectors]
 
 def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
-    """
-    How similar two embedding vectors are: -1 (opposite) to 1 (identical
-    direction/meaning). The standard way to compare embeddings.
-    """
+  
     dot_product = sum(a * b for a, b in zip(vec_a, vec_b))
     magnitude_a = math.sqrt(sum(a * a for a in vec_a))
     magnitude_b = math.sqrt(sum(b * b for b in vec_b))
