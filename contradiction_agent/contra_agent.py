@@ -1,51 +1,83 @@
-
 import json
 import os
 import math
+import time
+import logging
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 load_dotenv()
 
+log = logging.getLogger(__name__)
+
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 EMBED_MODEL = os.environ.get("GEMINI_EMBED_MODEL", "gemini-embedding-2")
-client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
-# Claims whose embeddings are at least this similar get grouped together.
-# 1.0 = identical meaning, 0.0 = unrelated. 0.80 is a reasonably tight bar —
-# raise it if unrelated claims are getting grouped, lower it if genuinely
-# related claims are being split apart.
+API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY:
+    raise RuntimeError("GEMINI_API_KEY not set — add it to your .env file")
+
+client = genai.Client(api_key=API_KEY)
 SIMILARITY_THRESHOLD = 0.80
+
+EMBED_BATCH_SIZE = 100
+
+BATCH_DELAY_SECONDS = 1.0
+
+
+def _parse_llm_object(raw_text: str) -> dict:
+   
+    raw_text = raw_text.strip()
+    start, end = raw_text.find("{"), raw_text.rfind("}")
+    if start == -1 or end == -1 or end < start:
+        raise ValueError("LLM response contained no JSON object")
+    return json.loads(raw_text[start:end + 1])
 
 
 def flatten_claims(papers: list[dict]) -> list[dict]:
-    """
-    Step 3's output is organized by paper (each paper has a list of claims).
-    For grouping across papers, it's easier to work with one flat list of
-    claims, each remembering which paper and page it came from.
-    """
+  
     flat = []
     for paper in papers:
         for claim in paper.get("claims", []):
             flat.append({
-                "paper_title": paper["title"],
+
+                "paper_id": claim.get("paper_id") or paper.get("paper_id"),
+                "paper_title": claim.get("paper_title") or paper.get("title"),
+                "chunk_id": claim.get("chunk_id"),
+                "page": claim.get("page"),
                 "claim": claim["claim"],
-                "page": claim["page"],
             })
     return flat
 
 
-def get_embedding(text: str) -> list[float]:
-    """Turn a piece of text into an embedding (list of numbers) using Gemini."""
-    response = client.models.embed_content(model=EMBED_MODEL, contents=text)
-    return response.embeddings[0].values
+def get_embeddings(texts: list[str]) -> list[list[float]]:
+   
+    all_embeddings = []
+
+    for i in range(0, len(texts), EMBED_BATCH_SIZE):
+        batch = texts[i:i + EMBED_BATCH_SIZE]
+        try:
+            response = client.models.embed_content(
+                model=EMBED_MODEL,
+                contents=batch,
+            )
+            all_embeddings.extend(e.values for e in response.embeddings)
+        except Exception as e:
+            log.error("Embedding batch %d failed: %s", i // EMBED_BATCH_SIZE, e)
+            raise
+
+        log.info("  Embedded %d/%d claims...", min(i + EMBED_BATCH_SIZE, len(texts)), len(texts))
+        if i + EMBED_BATCH_SIZE < len(texts):
+            time.sleep(BATCH_DELAY_SECONDS)
+
+    return all_embeddings
 
 
 def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
     """
-    Measures how similar two embedding vectors are, from -1 (opposite) to
-    1 (identical direction/meaning). This is the standard way to compare
-    embeddings.
+    How similar two embedding vectors are: -1 (opposite) to 1 (identical
+    direction/meaning). The standard way to compare embeddings.
     """
     dot_product = sum(a * b for a, b in zip(vec_a, vec_b))
     magnitude_a = math.sqrt(sum(a * a for a in vec_a))
@@ -57,22 +89,16 @@ def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
     return dot_product / (magnitude_a * magnitude_b)
 
 
-def group_similar_claims(claims: list[dict], threshold: float = SIMILARITY_THRESHOLD) -> list[list[dict]]:
-    """
-    Groups claims by meaning similarity using a simple greedy approach:
-    for each claim, compare it to the FIRST claim already in each existing
-    group. If similar enough, join that group. Otherwise, start a new group.
-
-    This is simpler than proper clustering algorithms (like k-means), but
-    works well for this use case and is easy to understand and debug.
-    """
+def group_similar_claims(
+    claims: list[dict],
+    embeddings: list[list[float]],
+    threshold: float = SIMILARITY_THRESHOLD,
+) -> list[list[dict]]:
+ 
     groups: list[list[dict]] = []
-    group_embeddings: list[list[float]] = []  # one representative embedding per group
+    group_embeddings: list[list[float]] = []
 
-    for claim in claims:
-        embedding = get_embedding(claim["claim"])
-        claim["_embedding"] = embedding  # stash temporarily for reuse below
-
+    for claim, embedding in zip(claims, embeddings):
         best_group_index = None
         best_similarity = 0.0
 
@@ -88,28 +114,19 @@ def group_similar_claims(claims: list[dict], threshold: float = SIMILARITY_THRES
             groups.append([claim])
             group_embeddings.append(embedding)
 
-    # clean up the temporary embedding field before returning
-    for group in groups:
-        for claim in group:
-            claim.pop("_embedding", None)
-
     return groups
 
 
 def _involves_multiple_papers(group: list[dict]) -> bool:
-    """Only worth an LLM contradiction-check if claims come from different papers."""
+   
     return len({c["paper_title"] for c in group}) > 1
 
 
 def check_group_for_contradiction(group: list[dict]) -> dict:
-    """
-    Sends one group of related claims (from different papers) to the LLM
-    and asks whether they agree or conflict.
-
-    Returns a dict: {"verdict": "agree"|"conflict"|"unclear", "explanation": "..."}
-    """
+   
     claims_text = "\n".join(
-        f'- "{c["claim"]}" (from {c["paper_title"]}, page {c["page"]})' for c in group
+        f'- "{c["claim"]}" (from {c["paper_title"]}, page {c["page"]})'
+        for c in group
     )
 
     prompt = f"""Here are claims from different papers that appear to be about the same topic:
@@ -126,63 +143,102 @@ exact format:
 
 ("verdict" must be exactly one of: "agree", "conflict", "unclear")"""
 
-    response = client.models.generate_content(model=MODEL, contents=prompt)
-    raw_text = response.text.strip()
-
-    if raw_text.startswith("```"):
-        raw_text = raw_text.strip("`")
-        raw_text = raw_text.replace("json\n", "", 1).replace("json", "", 1)
+  
+    response = client.models.generate_content(
+        model=MODEL,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+        ),
+    )
 
     try:
-        return json.loads(raw_text)
+        verdict = json.loads(response.text.strip())
     except json.JSONDecodeError:
-        return {"verdict": "unclear", "explanation": "Could not parse LLM response."}
+        try:
+            verdict = _parse_llm_object(response.text)
+        except (ValueError, json.JSONDecodeError):
+            log.warning("Could not parse verdict response; marking group unclear.")
+            return {"verdict": "unclear", "explanation": "Could not parse LLM response."}
+
+    if verdict.get("verdict") not in ("agree", "conflict", "unclear"):
+        verdict["verdict"] = "unclear"
+
+    return verdict
+
+
+def load_step3_results(input_file: str) -> tuple[list[dict], str | None]:
+   
+    with open(input_file, "r") as f:
+        data = json.load(f)
+
+    if isinstance(data, dict) and "papers" in data:
+        return data["papers"], data.get("research_question")
+    return data, None
 
 
 def run_contradiction_step(input_file: str = "claims_results.json",
-                            output_file: str = "contradiction_results.json") -> list[dict]:
-    """
-    Full Step 4 pipeline: load Step 3's claims, group similar ones, check
-    cross-paper groups for agreement/conflict, save the result.
-    """
-    with open(input_file, "r") as f:
-        papers = json.load(f)
+                           output_file: str = "contradiction_results.json") -> list[dict]:
+    
+    papers, research_question = load_step3_results(input_file)
 
     all_claims = flatten_claims(papers)
-    print(f"Loaded {len(all_claims)} claims from {len(papers)} papers.\n")
+    if not all_claims:
+        print("No claims found in the input file. Run Step 3 first.")
+        return []
 
-    print("Grouping claims by similarity (this calls the embedding model once per claim)...")
-    groups = group_similar_claims(all_claims)
+    n_papers = len({c["paper_title"] for c in all_claims})
+    print(f"Loaded {len(all_claims)} claims from {n_papers} papers.\n")
+    print("Embedding claims (batched API calls)...")
+    embeddings = get_embeddings([c["claim"] for c in all_claims])
+    print("Grouping claims by similarity...")
+    groups = group_similar_claims(all_claims, embeddings)
     print(f"Formed {len(groups)} groups.\n")
-
     results = []
     checked_count = 0
 
     for group in groups:
         if len(group) < 2 or not _involves_multiple_papers(group):
-            # Nothing to compare — either a lone claim, or all claims came
-            # from the same paper (agreeing with itself isn't interesting)
             continue
 
         checked_count += 1
         print(f"  Checking group {checked_count}: {len(group)} claims across "
               f"{len({c['paper_title'] for c in group})} papers...")
         verdict = check_group_for_contradiction(group)
+        time.sleep(BATCH_DELAY_SECONDS)
 
         results.append({
-            "claims": group,
+            "claims": group,   
             "verdict": verdict["verdict"],
             "explanation": verdict["explanation"],
         })
 
-    with open(output_file, "w") as f:
-        json.dump(results, f, indent=2)
+    n_conflicts = sum(1 for r in results if r["verdict"] == "conflict")
+    n_agree = sum(1 for r in results if r["verdict"] == "agree")
+    n_unclear = sum(1 for r in results if r["verdict"] == "unclear")
 
-    conflicts = sum(1 for r in results if r["verdict"] == "conflict")
-    print(f"\nChecked {checked_count} cross-paper groups. Found {conflicts} conflict(s).")
+    output = {
+        "research_question": research_question,
+        "stats": {
+            "total_claims": len(all_claims),
+            "groups_formed": len(groups),
+            "cross_paper_groups_checked": checked_count,
+            "conflicts": n_conflicts,
+            "agreements": n_agree,
+            "unclear": n_unclear,
+        },
+        "comparisons": results,
+    }
+
+    with open(output_file, "w") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+
+    print(f"\nChecked {checked_count} cross-paper groups: "
+          f"{n_conflicts} conflict(s), {n_agree} agreement(s), {n_unclear} unclear.")
     print(f"Saved results to {output_file}")
     return results
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     run_contradiction_step()
