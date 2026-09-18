@@ -1,33 +1,3 @@
-"""
-Step 4: Contradiction Agent
-----------------------------
-Takes Step 3's output (claims_results.json) — a set of papers, each with
-provenance-carrying claims — and finds where the papers DISAGREE.
-
-Pipeline:
-    1. Flatten claims across papers (preserving full provenance)
-    2. Embed all claims LOCALLY (sentence-transformers — no API, no quota,
-       no rate limits; the LLM is reserved for the actual verdict judgment)
-    3. Greedily group claims with similar meaning (cosine similarity)
-    4. For groups mixing >= 2 different papers, ask the LLM:
-       agree / conflict / unclear — and WHY, if they conflict
-
-Design notes:
-- Embeddings are local (all-MiniLM-L6-v2): free, fast, and deterministic.
-  This splits the work the right way — cheap local models for retrieval/
-  grouping, expensive API calls only for reasoning.
-- Greedy leader-grouping is order-dependent (first claim anchors each
-  group). Simple, debuggable, good enough for review-scale corpora.
-- SIMILARITY_THRESHOLD is calibrated for MiniLM: unrelated sentences
-  typically score ~0.1-0.4, related ones ~0.5-0.7. The diagnostic block
-  after embedding prints the sample spread so this can be re-tuned from
-  evidence, not guesswork.
-- Verdicts are cached on disk, so threshold re-tuning runs don't
-  re-spend LLM quota on unchanged groups.
-- Groups with claims from only ONE paper are skipped — a paper agreeing
-  with itself isn't a contradiction.
-"""
-
 import json
 import os
 import math
