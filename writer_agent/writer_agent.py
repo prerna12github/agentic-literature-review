@@ -1,21 +1,3 @@
-"""
-Step 5: Writer Agent
----------------------
-Takes Step 3's claims (claims_results.json) and Step 4's contradiction
-findings (contradiction_results.json), builds a single evidence block,
-and asks the LLM to synthesize a final answer to the research question —
-with every claim cited and any conflicts explicitly surfaced.
-
-Design decisions:
-- Citation keys ("Lewis et al. 2023") are assigned IN CODE, never invented
-  by the LLM — the model can only use keys that exist in the context.
-- Contradictions are REQUIRED reading for the model: conflict groups are
-  listed first and the prompt demands they be addressed explicitly. This
-  is the project's headline differentiator.
-- A verification pass afterwards checks that cited claims actually exist
-  in the input evidence (cheap anti-hallucination check).
-"""
-
 import json
 import os
 import logging
@@ -26,8 +8,6 @@ load_dotenv()
 
 log = logging.getLogger(__name__)
 
-# FIXED: real model name. NOTE: check .env — a stale GEMINI_MODEL there
-# overrides this default (this has bitten three times now!).
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -35,33 +15,23 @@ if not API_KEY:
     raise RuntimeError("GEMINI_API_KEY not set — add it to your .env file")
 
 client = genai.Client(api_key=API_KEY)
-
-# Soft cap: if the evidence is enormous, keep the most-cited papers whole
-# and truncate claim lists beyond this, so the prompt stays manageable.
 MAX_CLAIMS_TOTAL = 250
 
 
 def _citation_key(paper: dict) -> str:
-    """
-    Short, human citation key assigned in code: "Lewis et al. 2020".
-    Deterministic and never left to the LLM to invent.
-    """
+    
     authors = paper.get("authors") or []
     year = paper.get("year") or "n.d."
     if not authors:
         return f"Unknown ({year})"
-    first = authors[0].split()[-1]  # surname
+    first = authors[0].split()[-1]  
     if len(authors) == 1:
         return f"{first} ({year})"
     return f"{first} et al. ({year})"
 
 
 def load_step3_claims(claims_file: str) -> tuple[list[dict], str | None]:
-    """
-    FIXED: unwrap Step 3's wrapped output
-        {"research_question": ..., "stats": ..., "papers": [...]}
-    Bare-list format supported for backward compatibility.
-    """
+  
     with open(claims_file, "r") as f:
         data = json.load(f)
 
@@ -71,11 +41,7 @@ def load_step3_claims(claims_file: str) -> tuple[list[dict], str | None]:
 
 
 def load_step4_comparisons(contradictions_file: str) -> list[dict]:
-    """
-    FIXED: Step 4's output is wrapped too:
-        {"research_question": ..., "stats": ..., "comparisons": [...]}
-    Return just the comparisons list; empty if the file doesn't exist.
-    """
+   
     if not os.path.exists(contradictions_file):
         return []
 
@@ -90,10 +56,6 @@ def load_step4_comparisons(contradictions_file: str) -> list[dict]:
 
 
 def assign_citation_keys(papers: list[dict]) -> dict:
-    """
-    Map paper_title -> citation key, and stash the key on each paper.
-    Returns the mapping for use in the context block.
-    """
     keys = {}
     for paper in papers:
         title = paper.get("title") or "untitled"
@@ -108,20 +70,12 @@ def build_context_block(
     comparisons: list[dict],
     title_to_key: dict,
 ) -> str:
-    """
-    Builds the evidence block fed to the LLM:
-      Part 0: paper registry (title -> citation key)
-      Part 1: claims by paper, cited with the code-assigned key
-      Part 2: contradiction findings (conflicts FIRST, most important)
-    """
-    # --- Part 0: registry ---
     registry_lines = [
         f'- "{title}" -> cite as [{key}]'
         for title, key in title_to_key.items()
     ]
     registry = "\n".join(registry_lines)
 
-    # --- Part 1: claims ---
     sections = []
     total_claims = 0
     for paper in papers:
@@ -147,8 +101,6 @@ def build_context_block(
         )
 
     claims_block = "\n\n".join(sections) if sections else "(No claims available.)"
-
-    # --- Part 2: contradictions, CONFLICTS FIRST ---
     if comparisons:
         conflicts = [c for c in comparisons if c.get("verdict") == "conflict"]
         others = [c for c in comparisons if c.get("verdict") != "conflict"]
@@ -182,7 +134,6 @@ def build_context_block(
 
 
 def generate_final_answer(research_question: str, context_block: str) -> str:
-    """Asks the LLM to write the synthesized, cited answer."""
     prompt = f"""You are writing a literature review answer to a specific research question,
 using ONLY the evidence provided below. Do not invent claims that aren't listed.
 
@@ -209,11 +160,6 @@ Write the answer now."""
 
 
 def verify_citations(answer: str, papers: list[dict]) -> list[str]:
-    """
-    Cheap anti-hallucination check: every claim quoted in the answer should
-    exist (as a substring of a known claim) in the input evidence. Returns
-    a list of warnings for anything that doesn't match.
-    """
     known_claims = [
         c["claim"]
         for p in papers
@@ -234,7 +180,6 @@ def verify_citations(answer: str, papers: list[dict]) -> list[str]:
 
 
 def format_references(papers: list[dict]) -> str:
-    """Reference list from the papers that actually contributed claims."""
     lines = []
     for paper in papers:
         if not paper.get("claims"):
@@ -251,7 +196,6 @@ def format_references(papers: list[dict]) -> str:
 
 def save_report(research_question: str, answer: str, references: str,
                 stats: dict, output_file: str = "final_report.md") -> None:
-    """Writes the final answer + references as a readable Markdown report."""
     report = f"""# Literature Review: {research_question}
 
 *Generated from {stats["papers_with_claims"]} papers, {stats["total_claims"]} extracted claims, and {stats["contradictions_checked"]} cross-paper comparisons ({stats["conflicts"]} conflict(s) detected).*
@@ -281,15 +225,10 @@ def run_writer_step(claims_file: str = "claims_results.json",
                     contradictions_file: str = "contradiction_results.json",
                     output_file: str = "final_report.md",
                     research_question: str = None) -> str:
-    """
-    Full Step 5 pipeline: load Steps 3 & 4's outputs, build the evidence
-    context, ask the LLM to synthesize an answer, verify citations,
-    and save the final report.
-    """
+ 
     papers, saved_question = load_step3_claims(claims_file)
     comparisons = load_step4_comparisons(contradictions_file)
 
-    # FIXED: reuse the saved question instead of always asking
     if research_question is None:
         research_question = saved_question or input("Enter your research question: ").strip()
         if saved_question:
@@ -299,7 +238,6 @@ def run_writer_step(claims_file: str = "claims_results.json",
         print("No papers found in the claims file. Run Step 3 first.")
         return ""
 
-    # Assign deterministic citation keys in code
     title_to_key = assign_citation_keys(papers)
 
     papers_with_claims = sum(1 for p in papers if p.get("claims"))
@@ -315,7 +253,6 @@ def run_writer_step(claims_file: str = "claims_results.json",
     print("Asking the LLM to synthesize the final answer...")
     answer = generate_final_answer(research_question, context_block)
 
-    # Anti-hallucination check
     warnings = verify_citations(answer, papers)
     if warnings:
         print(f"\n⚠ Verification: {len(warnings)} quoted passage(s) in the answer "
