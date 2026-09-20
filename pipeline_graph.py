@@ -9,14 +9,14 @@ from graph_state import LitReviewState
 from search_pipeline.search import search_papers
 from search_pipeline.download import download_until_target
 from search_pipeline.extract import extract_for_paper
-from filter_agent import score_papers_with_llm, show_ranked_list
-from reader_agent import extract_claims_for_paper
+from filter_agent.filter_agent import score_papers_with_llm, show_ranked_list
+from reader_agent.reader_agent import extract_claims_for_paper
 from contradiction_agent.contra_agent import (
     flatten_claims, get_embeddings, group_similar_claims,
     check_group_for_contradiction, _involves_multiple_papers,
     SIMILARITY_THRESHOLD,
 )
-from writer_agent import (
+from writer_agent.writer_agent import (
     assign_citation_keys, build_context_block, generate_final_answer,
     format_references, verify_citations, save_report,
 )
