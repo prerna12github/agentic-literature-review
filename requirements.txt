@@ -3,3 +3,4 @@ pymupdf
 python-dotenv
 google-genai
 sentence-transformers
+langgraph>=0.2.0
