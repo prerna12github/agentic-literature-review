@@ -6,7 +6,6 @@ from langgraph.types import interrupt, Command
 
 from graph_state import LitReviewState
 
-# Import your existing agents (adjust paths to your package layout)
 from search_pipeline.search import search_papers
 from search_pipeline.download import download_until_target
 from search_pipeline.extract import extract_for_paper
