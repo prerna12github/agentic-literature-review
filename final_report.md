@@ -1,57 +1,33 @@
-# Literature Review: quantum gate error reduction fidelity optimization
+# Literature Review: How can explainable artificial intelligence (XAI) techniques improve the transparency, interpretability, and trustworthiness of machine-learning-based automated student answer evaluation systems?
 
-*Generated from 9 papers, 163 extracted claims, and 9 cross-paper comparisons (2 conflict(s) detected).*
+*Generated from 4 papers, 43 extracted claims, and 1 cross-paper comparisons (0 conflict(s) detected).*
 
 ---
 
-### Quantum Gate Error Reduction and Fidelity Optimization
+Based on the provided literature, explainable artificial intelligence (XAI) techniques play a crucial role in improving the transparency, interpretability, and trustworthiness of machine-learning-based automated educational systems, such as automated student answer and essay evaluation tools. 
 
-Optimizing quantum gate fidelity and reducing gate errors involve multiple strategies across various hardware platforms and theoretical frameworks. Approaches range from advanced control pulse optimization and machine learning compilation to physical and environmental noise analysis.
+### Mechanisms of Transparency and Interpretability
+Traditional AI models often operate as "black boxes" that achieve high predictive accuracy while offering limited explanations for their decisions due to hidden model processes (Bekele, 2026, p. 18; Kumawat et al., 2025, p. 0). To address this, XAI methods such as LIME and SHAP can be integrated across various model families to provide transparent explanations (Qureshi et al., 2026, p. 0). 
 
-#### Control Frameworks and Pulse Optimization
-To simultaneously optimize the speed and fidelity of quantum computation against stochastic control errors and leakage, reinforcement learning (RL) frameworks have been proposed (Niu et al., 2018, p. 0). In superconducting-qubit architectures, deterministic and reversible coherent leakage is caused by direct couplings between the qubit subspace and higher-energy subspaces, while incoherent leakage stems from non-adiabatic transitions or photon loss (Niu et al., 2018, p. 1). Universal control cost function optimization (UFO) techniques combined with continuous-variable policy-gradient agents achieve up to two orders of magnitude reduction in average infidelity and standard deviation compared to stochastic gradient descent (SGD) baselines (Niu et al., 2018, p. 1, 4, 6). 
+Specifically, tools like LIME and SHAP highlight which parts of an input most influenced a model's output, offering insights into the reasoning behind an AI response (Kumawat et al., 2025, p. 3). Furthermore, different machine learning architectures rely on distinct features that XAI techniques help uncover: Random Forest models heavily rely on surface-level content keywords, BERT models attend to semantic coherence and argument structure, and FLAN-T5 models exhibit sensitivity to instruction prefixes and structural positional cues (Qureshi et al., 2026, p. 9). Additionally, recurrent models with attention mechanisms enhance interpretability by pointing directly to previous interactions that most strongly affected a particular prediction (Patel et al., 2026, p. 5).
 
-Similarly, pulse-level calibrations can generate high-fidelity control pulses for continuous parameter sets of quantum gates (Chadwick et al., 2023, p. 0). Pre-calibrating a continuous pulse landscape and re-optimizing specific operations (such as CNOT and $\sqrt{\text{SWAP}}$) allows linear interpolation to yield high-fidelity pulses for intermediate operations, significantly improving calibration efficiency and pulse infidelities (Chadwick et al., 2023, p. 0, 1). 
+### Enhancing Trustworthiness and User Confidence
+Improving model interpretability is essential for users to trust and effectively utilize natural language processing (NLP) models (Kumawat et al., 2025, p. 2). When explainability mechanisms are integrated into educational AI systems, they successfully improve transparency, accountability, and ethical AI adoption, while supporting reliable decision-making (Bekele, 2026, p. 16). 
 
-In neutral-atom platforms, fast single-pulse gates based on optimal control, atomic dark states to minimize scattering, and improved Rydberg excitation and cooling achieve 99.5% fidelity for two-qubit controlled phase (CZ) gates on up to 60 atoms in parallel, surpassing error-correcting thresholds (Evered et al., 2023, p. 0).
-
-#### Qubit Allocation and Circuit Compilation
-Circuit-level error reduction can also be achieved through intelligent compilation and qubit allocation. By combining reinforcement learning with a graph neural network (GNN)-based Q-network (GNAQC), mapping decisions analyze the backend graph's connections and error rates to provide more reliable layouts, resulting in an approximate 12.7% relative increase in final output fidelity compared to pre-existing methods (Lecompte et al., 2023, p. 1, 2).
-
-#### Fidelity Analysis and Theoretical Limits
-Understanding the limits of fidelity requires examining noise models and open quantum systems. The Average Gate Infidelity (AGI) under Markovian noise can be evaluated through perturbative expansions in terms of environmental coupling coefficients (Hartmann et al., 2024, p. 1). For single qudits under pure dephasing, AGI transitions from a linear regime to a nonlinear regime that saturates at a stable plateau in the strong-noise regime, bounded between $1 - \frac{2}{d+1}$ and $1 - \frac{1}{d+1}$ for dimension $d$ (Hartmann et al., 2024, p. 7, 8, 17). 
-
-#### Addressing Experimental and Architectural Discrepancies
-When evaluating high-fidelity entangled states and gate error sources across literature, several architectural differences and specific contexts must be noted:
-
-* **Bell State and Entangled Gate Fidelities:** Quantitative values for Bell state and entangling gate fidelities differ depending on the platform. Evered et al. (2023, p. 1–2) report raw Bell-state fidelities of 98.0(2)% and CZ gate fidelities of 99.52(4)% to 99.54(2)% in neutral-atom systems, whereas Steinacker et al. (2024, p. 1, 4) report uncorrected Bell state fidelities between 96.47% and 97.17% in gate-defined quantum dots. These differences arise because the claims evaluate different quantum computing architectures using distinct experimental setups and physical qubits.
-* **Primary Error Sources:** The dominant source of error varies by gate type and deployment. Joas et al. (2024, p. 8) analyze local electron spin gates in diamond quantum registers and find that 90% of observed errors are coherent and correctable, with unpolarized spins and misaligned fields contributing significantly. Conversely, Gupta et al. (2025, p. 1) identify Bell pair infidelity from noisy quantum links as the primary source of error for remote gates in distributed quantum computing. These differing conclusions occur because the claims refer to entirely different types of gates and systems (local spin gates versus remote distributed gates) that inherently possess distinct primary error mechanisms.
+Qualitative findings demonstrate that explainable AI significantly improves stakeholder trust, perceived fairness, transparency, and confidence in AI-supported educational decision-making (Bekele, 2026, p. 0). Moreover, providing clear adaptive interventions and explainable feedback improves students' motivation and engagement, while easing teachers' concerns regarding the use of such systems in class (Kumawat et al., 2025, p. 4).
 
 ---
 
 ## Contradictions Found
 
-- **AGREE**: The claims discuss different aspects of quantum control—such as optimizing gate fidelity, mitigating leakage errors, and generating control pulses—and represent complementary advancements in quantum computing rather than contradictory findings.
-- **AGREE**: The claims discuss improvements in quantum gate synthesis and optimization using different advanced control methods (reinforcement learning and optimal control) on different quantum computing platforms, representing complementary advancements rather than conflicting results.
-- **AGREE**: The claims discuss different aspects of average gate infidelity (AGI) and quantum control: one set of claims measures performance improvements of RL-based control over SGD baselines, while the other derives perturbative expansions of AGI. They address different topics within quantum control and do not contradict one another.
-- **UNCLEAR**: The claims discuss different aspects of quantum computing and gate optimization—such as optimal gate synthesis via reinforcement learning, pulse space calibration efficiency, and multi-qubit entangling gate design—using disparate methods and contexts, making direct comparison of their findings inconclusive.
-- **AGREE**: The claims discuss different aspects of quantum gate fidelities (experimental demonstration, general error-correcting thresholds, and theoretical simulation assumptions), which address different contexts rather than directly contradicting one another.
-- **CONFLICT**: The claims are from two different papers evaluating different quantum computing architectures (neutral-atom quantum computers versus gate-defined quantum dots) using different experimental setups and physical qubits, resulting in different quantitative fidelity values for Bell states and entangling gates.
-- **AGREE**: Both sets of claims discuss high-fidelity quantum gates achieved experimentally in different physical systems (spatial mode quantum gates and diamond quantum registers), and while their specific fidelity values and contexts differ, they do not contradict each other as they describe separate physical implementations and methods.
-- **CONFLICT**: The claims refer to different types of gates and systems (local spin gates in diamond quantum registers versus remote gates in distributed quantum computing) which naturally have different primary error sources.
-- **AGREE**: The claims from the first paper consistently describe the performance, benefits, and scalability of the GNAQC method without contradiction, while the claim from the second paper addresses a different topic in quantum computing (distributed quantum computing) and does not contradict the findings about GNAQC.
+- **AGREE**: Both claims state that LIME and SHAP are used to provide transparency and explainability in AI models by highlighting influential input features.
 
 ## References
 
-- **Universal quantum control through deep reinforcement learning** — M. Niu, S. Boixo, V. Smelyanskiy, H. Neven (2018) — https://www.semanticscholar.org/paper/3ada65624811cfc46bc113509f3120100bcf4f52
-- **Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization** — Jason Chadwick, F. Chong (2023) — https://www.semanticscholar.org/paper/98c011f2d43a9e89b2529dc88e8557f0db69a163
-- **Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing** — Jean-Gabriel Hartmann, D. Janković, Rémi Pasquier, M. Ruben, P. Hervieux (2024) — https://www.semanticscholar.org/paper/39fd0b4b4be09ff75664e8140624d482a4134486
-- **High-fidelity parallel entangling gates on a neutral-atom quantum computer** — S. Evered, D. Bluvstein, M. Kalinowski, S. Ebadi, T. Manovitz, Hengyun Zhou, Sophie Li, A. Geim, Tout T. Wang, N. Maskara, H. Levine, G. Semeghini, M. Greiner, V. Vuletić, M. Lukin (2023) — https://www.semanticscholar.org/paper/531874012fede3c01f44f2d81bfb926c0a25c9aa
-- **Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks** — Qianke Wang, Jun Liu, Dawei Lyu, Jian Wang (2024) — https://www.semanticscholar.org/paper/3b743298ec22e8d6a69dd7afd4256dcafe1421a0
-- **High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers** — T. Joas, F. Ferlemann, Roberto Sailer, Philipp J. Vetter, Jingfu Zhang, R. Said, T. Teraji, Shinobu Onoda, T. Calarco, G. Genov, Matthias M. Muller, F. Jelezko (2024) — https://www.semanticscholar.org/paper/26e0df30047c596ad4e9114f0d11e2c3c8492648
-- **Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits** — Travis Lecompte, Fang Qi, Xu Yuan, Nian-feng Tzeng, M. Najafi, Lu Peng (2023) — https://www.semanticscholar.org/paper/bb15ab89d88c4ca337d5d4af19c467d31d811f3e
-- **Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing** — Shobhit Gupta, Nikolay Sheshko, Daniel Dilley, A. Gonzales, M. K. Singh, Zain Saleem (2025) — https://www.semanticscholar.org/paper/ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8
-- **Bell inequality violation in gate-defined quantum dots** — P. Steinacker, T. Tanttu, Wee-Han Lim, Nard Dumoulin Stuyck, M. Feng, S. Serrano, E. Vahapoglu, R.-Y. Su, J. Y. Huang, Cameron Jones, Kohei M. Itoh, F. Hudson, C. Escott, A. Morello, A. Saraiva, C. Yang, A. Dzurak, A. Laucht (2024) — https://www.semanticscholar.org/paper/f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10
+- **Towards Trustworthy Automated Essay Scoring: Explainable Transformers and Efficient Fine-Tuning Strategies** — Abdul Rehman Qureshi, Zakria, Muhammad Asif, Muhammad Saddam Khokhar, Safdar Hussain Mangnejo (2026) — https://www.semanticscholar.org/paper/a0313e75e462294769f2783cd78dd0ea5919130e
+- **The Role of Explainable AI (XAI) In Enhancing Transparency and Trust in NLP-Powered Educational Systems** — Priya Kumawat, Pradeep Singh Shaktawat (2025) — https://www.semanticscholar.org/paper/f0e0717d9eab644e17ac1d34e0de9ee8f0f22a44
+- **Machine Learning and Deep Learning Approaches for Cognitive Reasoning Assessment in Personalized Education: A Systematic Literature Review** — Alka Patel, Rajesh Patel (2026) — https://www.semanticscholar.org/paper/be60e87846ab4b213fd27598b4410041c215519d
+- **Development of an Explainable Artificial Intelligence Framework for Academic Integrity, Inclusive Learning, and Quality Assurance in Digital Higher Education** — M. Bekele (2026) — https://www.semanticscholar.org/paper/4d8a0d8a115d526a1a5407e71620af7923967498
 
 ---
 *All claims above are grounded in the listed source papers with page-level citations, produced by an agentic pipeline: Search → Filter (human-approved) → Read → Contradiction-check → Write.*
