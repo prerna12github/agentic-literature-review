@@ -33,7 +33,6 @@ log = logging.getLogger(__name__)
 OVERSAMPLE_FACTOR = 3
 TARGET_PAPERS = 10
 
-# Separate lightweight Gemini client for the keyword-distillation step
 _client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 _KEYWORD_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
