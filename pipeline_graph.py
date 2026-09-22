@@ -1,21 +1,3 @@
-"""
-pipeline_graph.py — LangGraph wiring for the 5-agent literature review.
-
-Each node is a thin wrapper around the functions you already built:
-    search_node        -> question_to_keywords + search + download + extract
-    filter_node        -> score_papers_with_llm
-    human_checkpoint   -> LangGraph interrupt() (pauses the graph, waits for
-                          approval, then resumes — this is the human-in-the-loop)
-    reader_node        -> extract_claims_for_paper
-    contradiction_node -> get_embeddings + group_similar_claims + verdicts
-    writer_node        -> build_context_block + generate_final_answer
-
-Running it:
-    graph = build_pipeline_graph(checkpointer)
-    result = graph.invoke({"query": "your question"}, config)
-    # -> pauses at the checkpoint; resume with Command(resume=decision)
-"""
-
 import json
 import os
 import logging
@@ -60,32 +42,30 @@ _KEYWORD_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 # Helper: long natural-language questions break keyword search engines
 # --------------------------------------------------------------------------
 def question_to_keywords(question: str) -> str:
-    """
-    NEW FIX: Search engines like Semantic Scholar match KEYWORDS, not prose.
-    A long natural-language research question ("How can XAI techniques
-    improve the transparency...?") returns 0 results because no paper
-    matches all 20 words.
-
-    So we distill the question into 5-8 keyword phrases first. The FULL
-    question is still kept in state — it's used for relevance scoring
-    (filter) and synthesis (writer). Only the search uses the distilled
-    version.
-    """
-    if len(question.split()) <= 8:      # already keyword-like — use as-is
+    # Already keyword-like — use as-is
+    if len(question.split()) <= 8:
         return question
 
-    response = _client.models.generate_content(
-        model=_KEYWORD_MODEL,
-        contents=f"""Distill this research question into 5-8 short keyword
-phrases suitable for an academic paper search engine (like Semantic Scholar).
-Return ONLY the keywords separated by commas, nothing else.
+    try:
+        response = _client.models.generate_content(
+            model=_KEYWORD_MODEL,
+            contents=f"""Distill this research question into ONE search query
+for an academic search engine: 4-6 topical keywords, space-separated, no
+commas, no boolean operators. Return ONLY the keywords, nothing else.
 
 Question: "{question}" """.strip(),
-    )
-    keywords = response.text.strip().replace("\n", " ")
-    print(f"  Search keywords: {keywords}")
-    return keywords
+        )
+        keywords = " ".join((response.text or "").strip().split())
+    except Exception as e:
+        log.warning("Keyword distillation failed: %s", e)
+        keywords = ""
 
+    if not keywords:
+        log.warning("Got no keywords from LLM — using first 8 words "
+                    "of the question as fallback.")
+        keywords = " ".join(question.split()[:8])
+
+    return keywords
 
 # --------------------------------------------------------------------------
 # Node 1: Search (wraps your entire Step 1 pipeline)
@@ -134,15 +114,9 @@ def filter_node(state: LitReviewState) -> dict:
 # Node 3: Human checkpoint — THE interrupt
 # --------------------------------------------------------------------------
 def human_checkpoint_node(state: LitReviewState) -> dict:
-    """
-    LangGraph interrupt(): the graph STOPS here and returns control to the
-    caller. The caller decides (CLI, web UI, API) and resumes the graph
-    with Command(resume=decision). This is your human-in-the-loop.
-    """
+
     papers = state["papers"]
 
-    # FIX 3 (part 2): never present an empty ranked list — if we got here
-    # with no papers, something upstream failed. Fail loudly.
     if not papers:
         raise RuntimeError(
             "No papers reached the approval checkpoint. "
@@ -151,11 +125,8 @@ def human_checkpoint_node(state: LitReviewState) -> dict:
 
     ranked = sorted(papers, key=lambda p: p.get("relevance_score", 0), reverse=True)
 
-    # Show the ranked list (same display as your CLI version)
     show_ranked_list(ranked)
 
-    # Pause here. Whatever the caller passes to Command(resume=...)
-    # becomes the return value of interrupt().
     decision = interrupt({
         "prompt": "Approve papers for full reading? Reply with "
                   "{'action': 'approve_all'} or {'remove': [indices]}.",
@@ -165,7 +136,6 @@ def human_checkpoint_node(state: LitReviewState) -> dict:
         ],
     })
 
-    # Apply the human's decision
     action = decision.get("action")
     if action == "approve_all":
         approved = ranked
@@ -275,14 +245,7 @@ def writer_node(state: LitReviewState) -> dict:
 # Build the graph
 # --------------------------------------------------------------------------
 def build_pipeline_graph(checkpointer=None):
-    """
-    Build and compile the pipeline graph.
 
-    Args:
-        checkpointer: optional LangGraph checkpointer (e.g. MemorySaver()).
-                      REQUIRED for interrupt()/resume to work across
-                      invocations — pass one when you actually run it.
-    """
     graph = StateGraph(LitReviewState)
 
     graph.add_node("search", search_node)
@@ -300,6 +263,4 @@ def build_pipeline_graph(checkpointer=None):
     graph.add_edge("contradiction", "writer")
     graph.add_edge("writer", END)
 
-    # checkpointer makes interrupt() + resume actually persist the
-    # paused state. Without one, resume may fail depending on version.
     return graph.compile(checkpointer=checkpointer)
