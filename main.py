@@ -1,16 +1,3 @@
-"""
-Step 1: Full pipeline runner
-------------------------------
-Search -> Download -> Extract (with page-tracked chunks)
-
-This is NOT the agent yet (no LLM calls, no reasoning). It's the
-"plumbing" layer that later agent steps (Filter, Reader, Contradiction,
-Writer) will build on top of.
-
-Usage:
-    python main.py "your research question here"
-"""
-
 import sys
 import json
 import os
@@ -23,7 +10,6 @@ OUTPUT_FILE = "results.json"
 
 
 def run_pipeline(query: str, target_papers: int = 10, save_dir: str = "papers") -> list[dict]:
-    # --- Step 1: search (oversample 3x to survive download losses) ---
     print(f"\n=== Step 1: Searching for papers on: '{query}' ===")
     papers = search_papers(query, limit=target_papers * 3)
 
@@ -33,17 +19,14 @@ def run_pipeline(query: str, target_papers: int = 10, save_dir: str = "papers") 
 
     print(f"Found {len(papers)} candidate papers.\n")
 
-    # --- Step 2: download until target count ---
     print(f"=== Step 2: Downloading open-access PDFs (target: {target_papers}) ===")
     papers = download_until_target(papers, target=target_papers, save_dir=save_dir)
 
-    # --- Step 3: extract page-tagged chunks ---
     print("\n=== Step 3: Extracting text (with page tracking) ===")
     for paper in papers:
         extract_for_paper(paper)
         print(f"  '{paper['title']}': {len(paper['chunks'])} chunks")
 
-    # --- Build a self-describing stats block for Step 2 (Filter Agent) ---
     n_downloaded = sum(1 for p in papers if p["pdf_status"] == "downloaded")
     n_abstract_only = sum(1 for p in papers if p["pdf_status"] == "abstract_only")
     n_spare = sum(1 for p in papers if p["pdf_status"] == "not_attempted")
@@ -61,9 +44,8 @@ def run_pipeline(query: str, target_papers: int = 10, save_dir: str = "papers") 
         "papers": papers,
     }
 
-    # --- Save everything so later steps can just load this file ---
     with open(OUTPUT_FILE, "w") as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)   # FIXED: dump `output`
+        json.dump(output, f, ensure_ascii=False, indent=2)   
 
     print(f"\nSaved results to {OUTPUT_FILE}")
 
