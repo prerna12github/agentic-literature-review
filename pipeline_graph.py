@@ -15,7 +15,7 @@ from search_pipeline.search import search_papers
 from search_pipeline.download import download_until_target
 from search_pipeline.extract import extract_for_paper
 from filter_agent.filter_agent import score_papers_with_llm, show_ranked_list
-from reader_agent.reader_agent import extract_claims_for_paper
+from reader_agent.reader_agent import extract_claims_for_all_papers
 from contradiction_agent.contra_agent import (
     flatten_claims, get_embeddings, group_similar_claims,
     check_group_for_contradiction, _involves_multiple_papers,
@@ -163,7 +163,7 @@ def reader_node(state: LitReviewState) -> dict:
     log.info("=== [Reader Agent] Reading %d papers ===", len(approved))
 
     for paper in approved:
-        extract_claims_for_paper(paper)
+        extract_claims_for_all_papers(paper)
         log.info("  '%s': %d claims", paper["title"], len(paper["claims"]))
 
     return {"approved_papers": approved, "claims_extracted": True}
