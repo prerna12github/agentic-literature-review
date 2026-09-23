@@ -3,6 +3,7 @@ import re
 import time
 import hashlib
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 
@@ -127,34 +128,31 @@ def download_pdf(paper: dict, pdf_url: str | None, save_dir: str = "papers") -> 
         return None
 
 
-def download_until_target(
-    papers: list[dict],
-    target: int = 10,
-    save_dir: str = "papers",
-) -> list[dict]:
+def download_until_target(papers, target=10, save_dir="papers"):
     os.makedirs(save_dir, exist_ok=True)
     successes = 0
+    for paper in papers[: target * 2]:   # only resolve what we might need
+        paper["resolved_pdf_url"] = resolve_pdf_url(paper)
 
-    for paper in papers:
-        if successes >= target:
-            paper["pdf_status"] = "not_attempted"
-            continue
+    def attempt(paper):
+        path = download_pdf(paper, pdf_url=paper.get("resolved_pdf_url"),
+                            save_dir=save_dir)
+        return paper, path
 
-        log.info("\nDownloading: %s", paper.get("title"))
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = [pool.submit(attempt, p) for p in papers[: target * 2]]
+        for future in as_completed(futures):
+            paper, path = future.result()
+            if path:
+                paper["local_pdf_path"] = path
+                paper["pdf_status"] = "downloaded"
+                successes += 1
+            else:
+                paper["local_pdf_path"] = None
+                paper["pdf_status"] = "abstract_only"
 
-        pdf_url = resolve_pdf_url(paper)
-        path = download_pdf(paper, pdf_url=pdf_url, save_dir=save_dir)
-
-        if path:
-            paper["local_pdf_path"] = path
-            paper["pdf_status"] = "downloaded"
-            successes += 1
-            log.info("  -> OK (%d/%d so far)", successes, target)
-        else:
-            paper["local_pdf_path"] = None
-            paper["pdf_status"] = "abstract_only"
-            log.info("  -> FAILED (kept as abstract-only)")
-        time.sleep(POLITENESS_DELAY_SECONDS)
+    for paper in papers[target * 2:]:
+        paper["pdf_status"] = "not_attempted"
 
     return papers
 
@@ -163,7 +161,6 @@ def download_all(
     papers: list[dict],
     save_dir: str = "papers",
 ) -> list[dict]:
-    """Old behavior: attempt every paper, no target. Prefer download_until_target."""
     for paper in papers:
         log.info("\nDownloading: %s", paper.get("title"))
         pdf_url = resolve_pdf_url(paper)
