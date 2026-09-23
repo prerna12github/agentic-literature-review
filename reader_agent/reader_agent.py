@@ -5,6 +5,7 @@ import logging
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 load_dotenv()
 
@@ -28,8 +29,21 @@ def _has_chunks(paper: dict) -> bool:
 
 
 def _batch_chunks(chunks: list[dict], batch_size: int) -> list[list[dict]]:
-    """Split a paper's chunk list into smaller batches for separate LLM calls."""
     return [chunks[i:i + batch_size] for i in range(0, len(chunks), batch_size)]
+
+def _filter_chunks_for_reading(chunks: list[dict], max_chunks: int = 60) -> list[dict]:
+
+    filtered = []
+    for c in chunks:
+        text_lower = c["text"].lower()
+        year_hits = sum(1 for y in range(1990, 2026) if f"({y})" in text_lower)
+        if year_hits >= 4:            # likely a references section
+            continue
+        if len(c["text"]) > 3000:     # giant blobs are usually tables/junk
+            continue
+        filtered.append(c)
+
+    return filtered[:max_chunks]
 
 
 def _parse_llm_json(raw_text: str) -> list:
@@ -107,14 +121,17 @@ exact format:
 def extract_claims_for_paper(paper: dict) -> dict:
    
     if not _has_chunks(paper):
-        paper["claims"] = []
-        return paper
+       paper["claims"] = []
+       return paper
 
     paper_id = paper.get("paper_id") or "unknown-id"
     paper_title = paper.get("title") or "untitled"
+    raw_count = len(paper["chunks"])
+    readable = _filter_chunks_for_reading(paper["chunks"], max_chunks=60)
+    print(f"    Chunk filter: {raw_count} -> {len(readable)} readable chunks")
 
     all_claims = []
-    batches = _batch_chunks(paper["chunks"], CHUNKS_PER_BATCH)
+    batches = _batch_chunks(readable, CHUNKS_PER_BATCH)          # ← now uses filtered
 
     for i, batch in enumerate(batches):
         print(f"    Reading batch {i + 1}/{len(batches)}...")
@@ -134,6 +151,21 @@ def extract_claims_for_paper(paper: dict) -> dict:
 
     paper["claims"] = all_claims
     return paper
+
+def extract_claims_for_all_papers(papers: list[dict], max_workers: int = 3) -> None:
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {
+            pool.submit(extract_claims_for_paper, paper): paper
+            for paper in papers
+        }
+        for future in as_completed(futures):
+            paper = futures[future]
+            try:
+                future.result()
+            except Exception as e:
+                log.error("Claim extraction failed for '%s': %s",
+                          paper.get("title"), e)
+                paper["claims"] = []
 
 
 def load_step2_results(input_file: str) -> tuple[list[dict], str | None]:
