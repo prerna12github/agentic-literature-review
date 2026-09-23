@@ -5,6 +5,7 @@ import logging
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 load_dotenv()
 
@@ -28,7 +29,6 @@ def _has_chunks(paper: dict) -> bool:
 
 
 def _batch_chunks(chunks: list[dict], batch_size: int) -> list[list[dict]]:
-    """Split a paper's chunk list into smaller batches for separate LLM calls."""
     return [chunks[i:i + batch_size] for i in range(0, len(chunks), batch_size)]
 
 
@@ -134,6 +134,21 @@ def extract_claims_for_paper(paper: dict) -> dict:
 
     paper["claims"] = all_claims
     return paper
+
+def extract_claims_for_all_papers(papers: list[dict], max_workers: int = 3) -> None:
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {
+            pool.submit(extract_claims_for_paper, paper): paper
+            for paper in papers
+        }
+        for future in as_completed(futures):
+            paper = futures[future]
+            try:
+                future.result()
+            except Exception as e:
+                log.error("Claim extraction failed for '%s': %s",
+                          paper.get("title"), e)
+                paper["claims"] = []
 
 
 def load_step2_results(input_file: str) -> tuple[list[dict], str | None]:
