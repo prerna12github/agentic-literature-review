@@ -1,50 +1,34 @@
-# Literature Review: How can XAI techniques improve trust in automated student answer evaluation?
+# Literature Review: What are the main approaches to long-context handling in transformer models?
 
-*Generated from 8 papers, 153 extracted claims, and 6 cross-paper comparisons (0 conflict(s) detected).*
+*Generated from 1 papers, 11 extracted claims, and 0 cross-paper comparisons (0 conflict(s) detected).*
 
 ---
 
-Based on the provided literature, explainable artificial intelligence (XAI) techniques play an important role in enhancing transparency, stakeholder trust, and pedagogical value in automated student answer evaluation and automated essay scoring (AES) systems. 
+Based on the provided evidence, the literature specifically addresses long-context handling through the **Hierarchical Memory Transformer (HMT)** approach (He et al., 2024, p. 4). 
 
-### Enhancing Transparency and Trust Through XAI
+### Main Approach: Hierarchical Memory Transformer (HMT)
+HMT handles long context by performing representation encoding using a segment summarization prompt embedding $T$ to summarize parts of a segment (He et al., 2024, p. 4). To manage memory constraints, the model caches the most recent 300 memory embeddings for memory retrieval (He et al., 2024, p. 16). 
 
-XAI techniques such as LIME and SHAP are integrated across model families to provide pedagogically transparent explanations, highlighting which parts of an input text most influenced a model's output (Qureshi et al., 2026, p. 0; Kumawat et al., 2025, p. 3). Similarly, XAI frameworks—including feature importance visualizations, decision trees, and explanation interfaces—are utilized to improve stakeholder transparency and trust (Habagat et al., 2026, p. 0). 
+### Performance and Comparisons
+Evidence regarding HMT's performance compared to other strategies indicates:
+* **Comparison with RMT:** HMT outperforms RMT across several datasets and models. For instance, HMT outperforms RMT by 13.0% for OPT and 10.8% for OpenLlamaV2 on Wikitext-103 (He et al., 2024, p. 7). On PG-19, HMT outperforms RMT by 3.98% for OPT and 6.85% for OpenLlamaV2 (He et al., 2024, p. 7). Furthermore, while RMT worsens effectiveness for RWKV and Qwen 2.5 14B on Wikitext-103 and PG-19 respectively, HMT boosts their effectiveness (He et al., 2024, p. 7). Unlike RMT, HMT also avoids gradient vanishing or explosion as BPTT unroll depth increases, thanks to its memory retrieval mechanism (He et al., 2024, p. 19).
+* **Comparison with Sliding Window:** When combined with Yi-6B-200K, HMT yields a 2% effectiveness improvement over the sliding window strategy while requiring 33.9 GB VRAM to process 30k tokens with a 512-token segment length (He et al., 2024, p. 7).
 
-Furthermore, deeper neural network architectures improve the reliability and trustworthiness of explanations. As the depth of a neural network increases, the precision and recall of its corresponding explanation model also improve (Kumar et al., 2020, p. 18). Conversely, the explanation model of a 2-layer predictive model is statistically significantly less trustworthy than that of a 4-layer model (Kumar et al., 2020, p. 11).
+### Context Dynamics and Configuration
+* **Local Context:** Data shows that 6.5% of segments retrieve memory tokens within 2 segments on Wikitext-103, highlighting the significance of local context (He et al., 2024, p. 16).
+* **Sensory Memory Configuration:** When evaluating HMT combined with Llama 2 7B on Wikitext-103, the perplexity (PPL) reaches its minimum when utilizing 32 embeddings for sensory memory (He et al., 2024, p. 18).
 
-### The Nuanced Impact of Explanations on Students
-
-Despite the technical integration of explainability tools, the direct psychological impact of explanations on students presents a complex picture. When testing the specific effects of automated essay scoring explanations—namely full-text global explanations and accuracy statements—research found that neither type of explanation had a direct effect on student trust or motivation compared to receiving no explanations at all (Conijn et al., 2023, p. 0). Instead, a student's subjective trust was significantly predicted by their baseline propensity to trust (Conijn et al., 2023, p. 8), while general trust and motivation were primarily influenced by the grade provided by the system, especially the difference between the student's self-estimated grade and the system grade (Conijn et al., 2023, p. 0). Nevertheless, simple accuracy statements can lead to higher interest in an assignment compared to providing no explanation (Conijn et al., 2023, p. 8).
-
-### Pedagogical Value and Formative Feedback
-
-Beyond holistic scoring, XAI and deep learning approaches offer direct pedagogical value by generating rubric-level feedback. By leveraging SHAP to analyze linguistic indices, AES systems can provide actionable guidance to students (Kumar et al., 2020, p. 0, p. 1). For example, feedback models can estimate that if a student employs diverse verbs in every sentence, their rubric score could improve from a baseline to a higher value, supporting iterative writing improvements and measurable score gains upon resubmission (Kumar et al., 2020, p. 20). 
-
-### Broader Governance and Equity Considerations
-
-Relying solely on high predictive accuracy or technical explainability is insufficient for achieving fairness and trust in automated educational assessments (Habagat et al., 2026, p. 0, p. 8). Automated scoring results remain subject to historical training data biases related to socioeconomic status, ethnicity, cultural background, and language variations (Habagat et al., 2026, p. 0, p. 8). Consequently, the literature highlights that fair AI-assisted assessment requires a combination of transparency via XAI, accountability and ethical governance, and Human-in-the-Loop (HITL) professional oversight frameworks where educators retain decision-making authority (Habagat et al., 2026, p. 0, p. 4, p. 10).
+*Note: Evidence from the provided registry is currently sparse and focused exclusively on the HMT approach (He et al., 2024).*
 
 ---
 
 ## Contradictions Found
 
-- **AGREE**: All claims consistently describe the use and purpose of explainable AI tools like LIME and SHAP for interpreting model decisions and providing transparency.
-- **AGREE**: The claims discuss different aspects of automated essay scoring systems—such as their impact on student trust and motivation, their high accuracy compared to humans, and the holistic versus rubric-level approaches in modeling—without presenting mutually exclusive contradictions.
-- **UNCLEAR**: The claims discuss different aspects of automated essay scoring explanations—types of explanations and student trust in one, versus network depth and explanation model performance in the other—making direct comparison of agreement or conflict inconclusive without further context.
-- **AGREE**: The claims describe different aspects of human rater scoring in essay grading studies (inter-rater reliability vs. scoring scale and method), which are complementary rather than contradictory.
-- **AGREE**: The claims discuss different practical aspects of SHAP values—accuracy, algorithmic efficiency in TreeSHAP, and computational overhead—without making contradictory statements.
-- **AGREE**: Both claims discuss the use of Explainable Artificial Intelligence (XAI) techniques to provide transparency, with the first focusing on general transparency and trust-building, and the second providing specific examples of XAI methods used to achieve spatial and pixel-level transparency.
+No cross-paper contradictions were flagged.
 
 ## References
 
-- **Towards Trustworthy Automated Essay Scoring: Explainable Transformers and Efficient Fine-Tuning Strategies** — Abdul Rehman Qureshi, Zakria, Muhammad Asif, Muhammad Saddam Khokhar, Safdar Hussain Mangnejo (2026) — https://www.semanticscholar.org/paper/a0313e75e462294769f2783cd78dd0ea5919130e
-- **The Effects of Explanations in Automated Essay Scoring Systems on Student Trust and Motivation** — R. Conijn, Patricia K. Kahr, C. Snijders (2023) — https://www.semanticscholar.org/paper/ab9e85db19d5ef0df6295ef33fc44b3a71d78a52
-- **Explainable Automated Essay Scoring: Deep Learning Really Has Pedagogical Value** — Vivekanandan S. Kumar, David Boulanger (2020) — https://www.semanticscholar.org/paper/00f754891bd6958896591f7d89cc7805b3e8210a
-- **A Model-Agnostic Framework for Transparent, Fair, and Reproducible Automated Essay Scoring** — Ahsan Javed, Research Questions (2026) — https://www.semanticscholar.org/paper/d0e3c442aaafe0089676a0450b4ad4336381237b
-- **The Role of Explainable AI (XAI) In Enhancing Transparency and Trust in NLP-Powered Educational Systems** — Priya Kumawat, Pradeep Singh Shaktawat (2025) — https://www.semanticscholar.org/paper/f0e0717d9eab644e17ac1d34e0de9ee8f0f22a44
-- **Beyond the Score: A Systematic Literature Review of Explainable Artificial Intelligence Frameworks for Promoting Equity in Automated Educational Assessment** — Marites D. Habagat, L. Reazol (2026) — https://www.semanticscholar.org/paper/84aee0f07ea26ebcce0cb3e51a7f1006805414a1
-- **Method of dynamic trust assessment in Zero Trust Architecture based on explainable artificial intelligence** — Andriy Palamarchuk (2026) — https://www.semanticscholar.org/paper/56e48725d6992387276bf4636c3577fd20e447a8
-- **Trustworthy deep learning for malaria diagnosis using explainable artificial intelligence** — R. Parveen, Baozhi Qui, Wei Song, N. Al-Kahtani, M. M. Jamjoom, S. M. Mostafa, Nadia Sultan, Joddat Fatima (2025) — https://www.semanticscholar.org/paper/05aae448e22849d56418fefb06ca810836e27a69
+- **HMT: Hierarchical Memory Transformer for Efficient Long Context Language Processing** — Zifan He, Yingqi Cao, Zongyue Qin, Neha Prakriya, Yizhou Sun, Jason Cong (2024) — https://www.semanticscholar.org/paper/d382fd06e12efe289869ea45d81c60b7a93a35aa
 
 ---
 *All claims above are grounded in the listed source papers with page-level citations, produced by an agentic pipeline: Search → Filter (human-approved) → Read → Contradiction-check → Write.*

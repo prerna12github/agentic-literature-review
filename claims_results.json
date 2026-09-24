@@ -2,8 +2,8 @@
   "research_question": "quantum gate error reduction fidelity optimization",
   "stats": {
     "papers_read": 17,
-    "papers_with_claims": 9,
-    "total_claims": 163
+    "papers_with_claims": 4,
+    "total_claims": 33
   },
   "papers": [
     {
@@ -112,127 +112,7 @@
       ],
       "relevance_score": 10,
       "relevance_reason": "Proposes a deep reinforcement learning framework to optimize the speed and fidelity of quantum gates while reducing errors.",
-      "claims": [
-        {
-          "claim": "We propose a new control framework to simultaneously optimize the speed and fidelity of quantum computation against both leakage and stochastic control errors.",
-          "page": 0,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p1:0",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "The agent control solutions demonstrate a two-order-of-magnitude reduction in average-gate-error over baseline stochastic-gradient-descent solutions and up to a one-order-of-magnitude reduction in gate time from optimal gate synthesis counterparts.",
-          "page": 0,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p1:0",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Coherent leakage is deterministic and reversible, caused by direct couplings between the qubit subspace and higher energy subspaces.",
-          "page": 1,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p2:1",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Incoherent leakage is caused by either non-adiabatic transitions during modulation of system Hamiltonians or by photon loss to the environment.",
-          "page": 1,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p2:1",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "We propose a control framework, called Universal control cost Function Optimization (UFO), towards overcoming fundamental challenges in quantum control by connecting deeper physical knowledge of the underlying quantum dynamics with state-of-the-art RL techniques.",
-          "page": 1,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p2:1",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "We derive an analytic leakage bound for a Hamiltonian control trajectory to account for both on- and off-resonant leakage errors, based on a perturbation theory within the time-dependent Schrieffer-Wolff transformation (TSWT) formalism and on a generalized adiabatic theorem.",
-          "page": 1,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p2:1",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "We use the UFO cost function as a reward for a continuous-variable policy-gradient RL agent, which is trained by trusted-region policy optimization, to find highest-reward/minimum-cost analog controls for a variety of two-qubit unitary gates.",
-          "page": 1,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p2:1",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Google's superconducting-qubit architecture that allows tunable qubit-qubit coupling is called the gmon architecture.",
-          "page": 2,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p3:2",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "There are two independent sources of leakage errors for TSWT-based quantum control that dominate in superconducting-qubit gate controls: direct coupling leakage and leakage caused by unwanted excitations due to fast modulation.",
-          "page": 2,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p3:2",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Our RL control solutions achieve up to a one-order-of-magnitude of improvement in gate time over the optimal gate synthesis approach based on the best known experimental gate parameters in superconducting qubits.",
-          "page": 3,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p4:3",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Our RL control solutions achieve a two-orders-of-magnitude reduction in fidelity standard deviation over solutions from both the noise-free RL counterpart and a baseline stochastic gradient descent (SGD) method.",
-          "page": 3,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p4:3",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Our RL control solutions achieve around two-orders-of-magnitude reduction in average infidelity over control solutions from the SGD method.",
-          "page": 4,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p5:4",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "Optimal gate synthesis provides the optimal decomposition of target unitary transformation into a minimum number of arbitrary single-qubit rotations and CZ gates, yielding a depth-seven circuit containing three two-qubit gates and five single-qubit gates.",
-          "page": 4,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p5:4",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "It takes significantly less time for an RL agent to learn a new target unitary gate based on the successful learning of a nearby target than to learn a new target gate afresh.",
-          "page": 4,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p5:4",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "An RL optimization provides a one-order-of-magnitude runtime improvement for the two-qubit gate family parametrized by N(alpha, alpha, pi/2) with alpha in [1.2, 1.7] over the optimal gate synthesis.",
-          "page": 4,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p5:4",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "The noise-optimized control solution manifests up to a one-order-of-magnitude improvement in average gate infidelity over the noise-free control solution using RL, and around two-orders-of-magnitude improvement over SGD baseline solutions.",
-          "page": 6,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p7:6",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        },
-        {
-          "claim": "The sampled fidelity standard deviation of the noise-optimized RL solver is consistently two-orders-of-magnitude lower than that of the two other methods throughout the tested noise model parameter range.",
-          "page": 6,
-          "chunk_id": "3ada65624811cfc46bc113509f3120100bcf4f52:p7:6",
-          "paper_id": "3ada65624811cfc46bc113509f3120100bcf4f52",
-          "paper_title": "Universal quantum control through deep reinforcement learning"
-        }
-      ]
+      "claims": []
     },
     {
       "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
@@ -319,85 +199,7 @@
       ],
       "relevance_score": 10,
       "relevance_reason": "Presents a method to quickly generate high-fidelity control pulses for quantum gate families through coordinated re-optimization.",
-      "claims": [
-        {
-          "claim": "We present a general method to quickly generate high-fidelity control pulses for any continuously-parameterized set of quantum gates after calibrating a small number of reference pulses.",
-          "page": 0,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p1:0",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "Interpolating between optimized control pulses for different quantum operations does not immediately yield a high-fidelity intermediate operation.",
-          "page": 0,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p1:0",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "Compared to previous neural network approaches, the method is 7.7x more computationally efficient to calibrate the pulse space for the set of all single-qubit gates.",
-          "page": 0,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p1:0",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "Re-optimizing the pulses for CNOT and sqrt(SWAP) to be more similar to each other (while still performing the correct operations) allows a simple linear interpolation method to obtain a high-fidelity pulse for the intermediate operation.",
-          "page": 0,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p1:0",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "We address this problem by describing a procedure to pre-calibrate a continuous pulse landscape for a family of quantum operations, from which high-fidelity control pulses for arbitrary operations can be instantly retrieved.",
-          "page": 1,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p2:1",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "Our method can achieve equal or better average infidelities as the neural network methods of [20] and [21] using less computation.",
-          "page": 1,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p2:1",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "In this work, we found lambda = 10^-2 to yield satisfactory results, but this will likely require tuning for different devices and gate families.",
-          "page": 1,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p2:1",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "The infidelity at the test point directly between these two reference points improved from 3.9 * 10^-2 initially to 1.5 * 10^-4 after the final round of re-optimization.",
-          "page": 4,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p5:4",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "Our method reaches an average pulse infidelity of 3.48 +/- 6.63 * 10^-6 in 6,654 total iterations, an improvement of over two orders of magnitude in average infidelity with 7.7x lower calibration cost compared to [20].",
-          "page": 6,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p7:6",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "We obtain a similar average infidelity to [20] after two rounds of re-optimization with 2.4x lower calibration cost for the two-qubit case.",
-          "page": 6,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p7:6",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        },
-        {
-          "claim": "The Weyl chamber example demonstrates the potential of this calibration routine, allowing the pulses for any two-qubit gates to be instantly obtained with infidelities of 1.0 +/- 0.8 * 10^-4 after only 2828 iterations of the pulse optimizer.",
-          "page": 7,
-          "chunk_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163:p8:7",
-          "paper_id": "98c011f2d43a9e89b2529dc88e8557f0db69a163",
-          "paper_title": "Efficient Control Pulses for Continuous Quantum Gate Families Through Coordinated Re-Optimization"
-        }
-      ]
+      "claims": []
     },
     {
       "paper_id": "1d10eb2dbf12348c8813080a263e494e7599415a",
@@ -704,189 +506,49 @@
       "relevance_reason": "Investigates average gate fidelity and noise dependence to provide insights for optimizing quantum gate design.",
       "claims": [
         {
-          "claim": "This paper investigates the Average Gate Fidelity (AGF) of single qudit systems under Markovian noise in the Lindblad formalism.",
-          "page": 1,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p1:0",
+          "claim": "The solution to the master equation for a quantum channel under a time-independent interaction Hamiltonian and Markovian noise is expressed as ρ(t) = E[ρ0] = e^(S+D)t ρ0.",
+          "page": 3,
+          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p3:2",
           "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
           "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
         },
         {
-          "claim": "We derive general expressions for the perturbative expansion of the Average Gate Infidelity (AGI) in terms of the environmental coupling coefficient and validate these with extensive numerical simulations.",
-          "page": 1,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p1:0",
+          "claim": "The average gate fidelity (AGF) of implementing a unitary operator over the quantum channel is defined as ¯F(E, U) := 1 - ¯I(E, U).",
+          "page": 3,
+          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p3:2",
           "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
           "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
         },
         {
-          "claim": "Qudits offer advantages including lower decoherence rates, enhanced quantum error correction through additional levels and stabiliser codes, and higher information density.",
-          "page": 1,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p1:0",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "Scaling the number of qubits poses significant challenges, whereas qudit-based approaches provide an avenue for increasing the Hilbert space with fewer physical units.",
-          "page": 1,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p1:0",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "First-order approximations are insufficient for fully understanding the behavior of qudits under realistic, near-term conditions where higher-order noise effects become significant.",
-          "page": 2,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p2:1",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The m-th order of the solution to the master equation in terms of the quantum channel reduces to E(m) = U o M(m)(t).",
-          "page": 5,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p5:5",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The general perturbative expansion of the AGI is given by I = -1/(d(d+1)) sum_{m=1}^{infty} (gamma t)^m Tr{M(m)(t)}.",
-          "page": 5,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p5:5",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The m-th order correction can always be separated into the sum of two parts: gate-independent terms O((gamma t)^m) and the product of the gate-dependent iterated commutators.",
-          "page": 5,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p5:5",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "For a pure dephasing channel L = Jz, the gate-independent AGI scales as O(I(m)0) ~ (gamma t)^m d^{2m}.",
-          "page": 6,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p6:6",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "Numerical simulations of qudits under pure dephasing show a transition from the linear regime to a nonlinear regime that saturates at a stable plateau value for stronger noise.",
-          "page": 7,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p7:7",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "Simulations of one million Haar-random qubit gates showed that AGI curves fall into two groups: monotonic approach from below (73%) and overshoot with a single turning point before converging from above (27%).",
-          "page": 7,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p7:7",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The upper bound, mean value, and lower bound of the plateau AGI are given by I*_max = 1 - 1/(d+1), bar{I}* = 1 - 1/d, and I*_min = 1 - 2/(d+1) respectively.",
-          "page": 8,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p8:8",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "In the large noise regime, the AGI is bounded by 1 - 2/(d+1) <= I* <= 1 - 1/(d+1).",
-          "page": 8,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p8:8",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The plateau AGI values are extremized by the identity gate (minimum) and the X gate (maximum), while the QFT gate plateaus at the mean AGI value.",
-          "page": 9,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p9:9",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The saturation points of interpolated Xh gates are well-described by a power-law model (gamma t)* = alpha(d - beta)^delta with R^2 > 0.999.",
-          "page": 9,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p9:9",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The first-order correction term I(1) is gate-independent and depends solely on the noise superoperator L.",
-          "page": 10,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p10:10",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The AGI remains gate-independent at order gamma^2 t^2, with the first appearance of gate-dependence occurring at order gamma^2 t^4 in the second-order correction term.",
-          "page": 11,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p11:11",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "Approximately 50 iterations are sufficient to calculate the second-order correction to a precision of epsilon < 1 * 10^-8 for qudit dimensions up to d < 64.",
-          "page": 12,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p12:12",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The relative error of the AGI up to second-order is reduced to approximately 1% for d = 4 and 0.01% for qubits.",
-          "page": 12,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p12:12",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The m-th order correction term for the master equation solution in an open quantum system of a single qudit can be evaluated using Campbell's lemma and induction.",
-          "page": 15,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p15:15",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The average gate infidelity (AGI) can be expressed in a perturbative expansion in terms of the noise coupling constant gamma and the m-th order correction terms.",
-          "page": 16,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p16:16",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "In the limit of strong coupling where (gamma t) >> 1, the AGI I of a single qudit with pure dephasing is bounded between 1 - 2/(d + 1) and 1 - 1/(d + 1).",
+          "claim": "For an open quantum system of a single qudit of dimension d in the limit of strong coupling where (γt) ≫ 1, the average gate infidelity I is bounded above and below in the region 1 - 2/(d + 1) ≤ I ≤ 1 - 1/(d + 1).",
           "page": 17,
           "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p17:18",
           "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
           "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
         },
         {
-          "claim": "The product of an operator B with the iterated commutator of order s, B[(A)^s, B], is traceless for all odd s.",
+          "claim": "The collapse operator L = Jz of pure dephasing preserves the populations of ρ while causing coherences to decay to zero.",
+          "page": 17,
+          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p17:18",
+          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
+          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
+        },
+        {
+          "claim": "Given two operators A and B, the product of B with the iterated commutator of order s, B[(A)s, B], is traceless for all odd s.",
           "page": 20,
           "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p20:21",
           "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
           "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
         },
         {
-          "claim": "The method of Mezzadri performs the best among tested algorithms for generating uniformly distributed Haar-random gates.",
-          "page": 23,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p23:24",
+          "claim": "100000 gates were generated using each of four methods (Bristol.gen cue, QuTiP.rand unitary, Cirq.rand unitary, and Cirq.rand special) for d = 2 to evaluate probability distributions of AGI plateaus.",
+          "page": 24,
+          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p24:25",
           "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
           "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
         },
         {
-          "claim": "The probability density of the AGI plateau values for d > 2 concentrates about the mean due to the concentration of measure phenomenon.",
-          "page": 26,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p26:27",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The saturation points of the AGIs for interpolated X_eta gates follow a three-parameter power-law model.",
-          "page": 27,
-          "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p27:28",
-          "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
-          "paper_title": "Nonlinearity of the Fidelity in Open Qudit Systems: Gate and Noise Dependence in High-dimensional Quantum Computing"
-        },
-        {
-          "claim": "The critical number of iterations s_epsilon required to reach convergence of the second-order AGI correction term varies linearly with time t for each dimension.",
+          "claim": "The number of iterations sε required to reach convergence of two successive terms in the summation for the second-order AGI correction is linear in t for each dimension shown for the X gate.",
           "page": 28,
           "chunk_id": "39fd0b4b4be09ff75664e8140624d482a4134486:p28:29",
           "paper_id": "39fd0b4b4be09ff75664e8140624d482a4134486",
@@ -1102,205 +764,100 @@
       "relevance_reason": "Realizes high-fidelity entangling gates on a neutral-atom quantum computer, surpassing the surface-code error correction threshold.",
       "claims": [
         {
-          "claim": "We report the realization of two-qubit entangling gates with 99.5% fidelity on up to 60 atoms in parallel, surpassing the surface-code threshold for error correction.",
-          "page": 0,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p1:0",
+          "claim": "The clock states |0> and |1> of 87Rb are used as the qubit states, and excitation to the Rydberg state |r> is carried out via a two-photon transition driven by 420-nm and 1,013-nm lasers.",
+          "page": 12,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p12:11",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "Our method uses fast, single-pulse gates based on optimal control, atomic dark states to reduce scattering and improvements to Rydberg excitation and atom cooling.",
-          "page": 0,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p1:0",
+          "claim": "Single-qubit rotations are realized using an amplitude-modulated 795-nm laser driving Raman rotations between mF = 0 clock states, with a DC magnetic field of 8.5 G applied.",
+          "page": 12,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p12:11",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "We generalize our method to design entangling gates involving a higher number of qubits, which we demonstrate by realizing low- error three-qubit gates.",
-          "page": 0,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p1:0",
+          "claim": "Traps are pulsed off for a few hundred ns during the Rydberg gate to avoid antitrapping and inhomogeneous light shifts, and ground-state atoms are recaptured for roughly 3 us between consecutive gates.",
+          "page": 12,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p12:11",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "Two-qubit-gate error rates below 1% (that is, fidelities above 99%) are required to surpass quantum error-correcting thresholds.",
-          "page": 0,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p1:0",
+          "claim": "In the far-detuned limit, the three-level system is effectively described as a two-level system with a dark state |D> and a bright state |B>, suppressing population in the excited state |E> by a factor proportional to Delta^-4.",
+          "page": 13,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p13:12",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "In this article, we experimentally realize two-qubit controlled phase (CZ) gates with 99.5% fidelity while operating on up to 60 neutral-atom qubits in parallel.",
-          "page": 0,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p1:0",
+          "claim": "Simulations assume an 88-us Rydberg-state lifetime and a 110-ns lifetime for the intermediate states.",
+          "page": 14,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p14:13",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "In our approach, quantum information is encoded in long-lived mF = 0 hyperfine qubits, in which high-fidelity (>99.97%) coherent single-qubit rotations are driven by Raman laser pulses.",
-          "page": 0,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p1:0",
+          "claim": "Branching ratios for the intermediate states are assumed to be eta_e->L = 0.6142, eta_e->1 = 0.2504, and eta_e->0 = 0.1354, and for the Rydberg states, eta_r->L = 0.894, eta_r->1 = 0.053, and eta_r->0 = 0.053.",
+          "page": 14,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p14:13",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "Errors in such quantum operations can occur owing to spontaneous emission from the intermediate atomic state |e⟩, atomic temperature effects, Rydberg-state decay during the gate, as well as mis- calibrations and experimental imperfections, such as laser noise or inhomogeneity.",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
+          "claim": "The Rydberg lifetime has a radiative decay component of 170 us and a black-body decay component of 128 us, scaled to n = 53.",
+          "page": 14,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p14:13",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "We generalize this gate scheme to a family of single-pulse gates with a small set of tunable gate parameters, including a version of the time-optimal gate consisting of a parameterized sinusoidal phase modulation, as well as a second, smooth-amplitude gate.",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
+          "claim": "For small angles theta, the gate time decreases with an approximate power law given by Omega T(theta)/2pi = 1.6 * (theta/2pi)^0.23.",
+          "page": 15,
+          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p15:14",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "We further optimize our control pulses to suppress scattering from the short-lived intermediate state |e⟩ by minimizing population in the 'bright' dressed state and maximizing population in the 'dark' state not containing |e⟩.",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Two main experimental upgrades facilitate high-fidelity entangling-gate operation: we suppress scattering by substantially increasing intermediate-state detuning while maintaining a high two-photon Rabi frequency (Ω/2π = 4.6 MHz), enabled by excitation to a lower-lying (n = 53) Rydberg state with a tenfold higher power laser.",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "To suppress decoherence from atomic velocity and position fluctuations, we implement Λ-enhanced grey molasses cooling and an improved optical pumping technique to achieve colder temperatures (radial phonon occupation n ≈1 −2).",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "We extract a raw Bell-state fidelity of 98.0(2)%, exceeding previous work by about 2%.",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "We fit the decreasing fidelity to an exponential decay to extract a CZ gate fidelity FCZ = 99.52(4)%.",
-          "page": 1,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p2:1",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Applying a sequence of up to 20 CZ gates with random single-qubit rotations in between, we fit the decaying state fidelity as a function of CZ gate number and extract FCZ = 99.54(2)%.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "We use a second method of global randomized benchmarking without these X gates, which allows for calibration of the single-particle phase and also benchmarks a gate fidelity of FCZ = 99.48(2)%.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Specifically, in Fig. 3b, we also realize and benchmark the smooth-amplitude gate and achieve a similar fidelity of FCZ = 99.55(3)%.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Despite the fact that all calibration and control is done globally and not for individual gate sites, we find that the fidelity of the time-optimal gate is constant across the ten individual gate sites within statistical error.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "In Fig. 3d, we extend to a 60-qubit system by using larger Rydberg beams (while maintaining the same intensity) and achieve a gate fidelity of FCZ = 99.48(2)% with good homogeneity across the array.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Our modelling accounts for the remaining CZ gate infidelity and reveals four main error sources: Rydberg decay, coupling to the other Rydberg mJ level, intermediate-state scattering and our measured ground-Rydberg T2* = 3 µs, which is dominated by laser-light-shift fluctuations and finite atomic temperature.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Using optimal control methods, we find a time-optimal CCZ gate and corresponding ansatz phase profile that realizes a native CCZ gate between three qubits in a time only 44% longer than the time-optimal CZ and faster than other known CCZ profiles.",
-          "page": 2,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p3:2",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Our data indicate high-performing three-qubit entangling gates across 21 qubits in parallel, consistent with a fidelity F = 97.9(2)%.",
-          "page": 3,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p4:3",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "We numerically search for and find fast gates for up to six qubits, with gate times markedly shorter than those required to decompose an N-qubit controlled-Z gate into 2N CZ gates and various single-qubit gates.",
-          "page": 3,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p4:3",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "For the optimal choice of phi, we extract a 99.48(2)% CZ gate fidelity, fitting to an exponential decay.",
+          "claim": "By fitting to an exponential decay using the optimal choice of phase, a 99.48(2)% CZ gate fidelity is extracted.",
           "page": 17,
           "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p17:16",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "For the 20-atom data, error distributions in each experimental shot are qualitatively similar to a Poisson distribution, but are better described by a model where gate fidelities in each shot are sampled from a Gaussian distribution with a mean of 99.54% and a standard deviation of 0.3%.",
+          "claim": "For the 60-atom data across 5,053 total repetitions, no shot was found with 18 or more errors out of the 30 gate sites.",
           "page": 18,
           "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p18:17",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "For the 60-atom data, out of 5,053 total repetitions, no shot was found with 18 or more errors out of the 30 gate sites, and the data are better described by a Gaussian-sampled fidelity model with a mean of 99.5% and a standard deviation of 0.3% rather than a strict Poisson distribution.",
+          "claim": "Error distributions in experimental shots are better described by a model sampling fidelities from a Gaussian distribution with a mean of 99.5% and a standard deviation of 0.3% than by a simple Poisson distribution model.",
           "page": 18,
           "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p18:17",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "Covariance between nearby sites for both 20-atom and 60-atom data exhibits small growth throughout the 20 CZ gates applied, particularly for nearest-neighbour sites.",
+          "claim": "The covariance between nearby sites exhibits small growth throughout the application of 20 CZ gates, particularly for nearest-neighbour sites in both 20-atom and 60-atom data.",
           "page": 19,
           "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p19:18",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "The time-optimal CCZ gate using the second approach realizes the CCZ gate about 34% faster with (Omega T / 2 pi) = 1.72, compared to (Omega T / 2 pi) = 2.61 from the first approach.",
+          "claim": "The time-optimal CCZ gate using the phase-flip on the |111> state approach is realized about 34% faster with (Omega T/2pi) = 1.72 compared to 2.61 from the |000> phase-flip approach.",
           "page": 20,
           "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p20:19",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         },
         {
-          "claim": "GHZ states measured experimentally on seven three-qubit groups in parallel show populations in |000> and |111> of 92.9(3)% and a parity contrast of 89(1)%, resulting in a raw GHZ-state fidelity of 90.9(6)%.",
+          "claim": "GHZ states measured experimentally on seven three-qubit groups in parallel yielded populations in |000> and |111> of 92.9(3)% and a parity contrast of 89(1)%, resulting in a raw GHZ-state fidelity of 90.9(6)%.",
           "page": 20,
           "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p20:19",
-          "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
-          "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
-        },
-        {
-          "claim": "Simulated error budgets for two-qubit CZ gates were performed at an intermediate-state detuning of Delta / 2 pi = 7.8 GHz and a two-photon Rabi frequency Omega / 2 pi = 4.6 MHz.",
-          "page": 21,
-          "chunk_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa:p21:20",
           "paper_id": "531874012fede3c01f44f2d81bfb926c0a25c9aa",
           "paper_title": "High-fidelity parallel entangling gates on a neutral-atom quantum computer"
         }
@@ -1495,107 +1052,44 @@
       "relevance_reason": "Constructs high-dimensional spatial mode quantum gates with high fidelity using deep neural networks.",
       "claims": [
         {
-          "claim": "The authors showcase the use of the multi-dimensional spatial mode of photons to construct a series of high-dimensional quantum gates achieved through the use of diffractive deep neural networks (D2NNs).",
-          "page": 1,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p1:0",
+          "claim": "The second-order correlation function g2(0) of the heralded single photon source is 0.024(2), implying remarkable performance.",
+          "page": 3,
+          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p3:2",
           "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
           "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
         },
         {
-          "claim": "Quantum gates demonstrate high fidelity of up to 99.6(2)%, as characterized by quantum process tomography.",
-          "page": 1,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p1:0",
+          "claim": "The process fidelities for the three-dimensional X1 gate, three-dimensional H1 gate, and CNOT gate are 98.4(2)%, 99.4(3)%, and 99.6(2)%, respectively.",
+          "page": 6,
+          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p6:5",
           "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
           "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
         },
         {
-          "claim": "The experimental implementation involves a programmable array of phase layers in a compact and scalable device capable of performing complex operations or quantum circuits.",
-          "page": 1,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p1:0",
+          "claim": "Both visibility and loss metrics demonstrate degradation when either upscaling or downsampling is applied to SLM parameters.",
+          "page": 9,
+          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p9:8",
           "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
           "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
         },
         {
-          "claim": "The efficacy of the D2NN gates is demonstrated by successfully implementing the Deutsch algorithm, along with an intelligent deployment protocol involving self-configuration and self-optimization.",
-          "page": 1,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p1:0",
+          "claim": "An increase in pixel numbers enhances gate performance, but with diminishing marginal returns.",
+          "page": 9,
+          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p9:8",
           "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
           "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
         },
         {
-          "claim": "Photon pairs at 1550 nm are generated by spontaneous parametric down-conversion (SPDC) in a type-0 periodically poled lithium niobate bulk crystal (PPLN2), and pump beams at 775 nm are generated via second harmonic generation of PPLN1.",
-          "page": 2,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p2:1",
+          "claim": "A decrease in grayscale depth exhibits negligible effects on performance until it falls below 16 levels.",
+          "page": 9,
+          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p9:8",
           "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
           "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
         },
         {
-          "claim": "The second-order correlation function g2(0) of the heralded single photon source is measured to be 0.024(2) based on three-fold coincidence experimental outcomes, or as low as 2.56 x 10^-4.",
-          "page": 2,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p2:1",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "Three-dimensional X gates, H gates, and a single-photon CNOT gate were designed and demonstrated.",
-          "page": 4,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p4:3",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "For the single-photon CNOT gate, four orbital angular momentum (OAM) modes of a single photon (-1, +1, -3, and +3) were used to encode two bits of information corresponding to states |00>, |01>, |10>, and |11>.",
-          "page": 4,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p4:3",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "Process fidelities achieved in the experiment were F3DX1 = 98.4(2)%, F3DH1 = 99.4(3)%, and FCNOT = 99.6(2)%.",
-          "page": 5,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p5:4",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "Two kinds of oracle functions that are constant and balanced are constructed using an identity operator and a CNOT operator, respectively, to implement the Deutsch algorithm.",
-          "page": 5,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p5:4",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "The maximum visibility achieved during spacing optimization between each layer is approximately 0.97 at 41 mm.",
-          "page": 7,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p7:6",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "Quantum gate performance remains relatively stable within the range of 32 to 512 gray levels, with a noticeable performance drop occurring only when the depth falls below 16 levels.",
-          "page": 8,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p8:7",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "Phase distortion introduced by Zernike polynomials renders the original design ineffective, demonstrating the necessity of pre-compensating for shape distortions in the SLM.",
-          "page": 8,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p8:7",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "D2NN significantly improves output visibility at a small cost of energy loss compared to the wavefront matching (WFM) approach, and theoretical energy losses in D2NN can be controlled by incorporating them into the optimization loss function.",
-          "page": 11,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p11:10",
-          "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
-          "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
-        },
-        {
-          "claim": "Accounting for system losses, detector efficiency, and a heralding efficiency of approximately 14.5%, the characterized source brightness stands at approximately 3.79 x 10^6 pairs/s/nm/mW.",
-          "page": 11,
-          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p11:10",
+          "claim": "SLM distortion introduces undesired phase shifts to the D2NN pattern, resulting in reduced performance.",
+          "page": 9,
+          "chunk_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0:p9:8",
           "paper_id": "3b743298ec22e8d6a69dd7afd4256dcafe1421a0",
           "paper_title": "Ultrahigh-fidelity spatial mode quantum gates in high-dimensional space by diffractive deep neural networks"
         }
@@ -1838,163 +1332,44 @@
       "relevance_reason": "Designs robust two-qubit spin gates and characterizes error sources to achieve record gate fidelity in diamond registers.",
       "claims": [
         {
-          "claim": "Experimentally, we demonstrate a record gate fidelity of F2q = (96.0 +- 2.5)% under ambient conditions.",
-          "page": 1,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p1:0",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "We extract the dipolar coupling vdip = (119.8 +- 1.0) kHz between the two NVs from the fitted sine oscillation frequency.",
-          "page": 4,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p3:2",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "Given the minimal gate time 1/(2vdip) = 4.2 \\mu s and the coherence times T2,XY8 = (454 +- 58) \\mu s, (476 +- 30) \\mu s for each NV measured, we calculate a coherence limit for the entangling gate fidelity of 99.1%, and 98.6% for our exact microwave gate with the actual \\tau1.",
-          "page": 4,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p3:2",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "We find a mean pEPG = 0.035 +- 0.017 averaged over all tested input states, corresponding to a pseudo gate fidelity of pF2q = 1 - pEPG = (96.5 +- 1.7)%.",
+          "claim": "The mean pseudo error per gate (pEPG) averaged over all tested input states is 0.035 ± 0.017, corresponding to a pseudo gate fidelity of pF2q = (96.5 ± 1.7)%.",
           "page": 5,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p4:4",
+          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p5:4",
           "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
           "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
         },
         {
-          "claim": "We achieve an entangling gate fidelity of F2q = (96.0 +- 2.5)% as extracted from an error per two-qubit Clifford gate EPC = (14.9 +- 2.7)% and precharacterized average effective single-qubit errors of F1q = (99.23 +- 0.12)%.",
-          "page": 7,
+          "claim": "The measured mean pEPG is only a factor of 2.5 away from the T2 limit pEPGT2 = 0.014 calculated from an independent coherence measurement.",
+          "page": 5,
+          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p5:4",
+          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
+          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
+        },
+        {
+          "claim": "Computational basis states show the lowest gate errors due to their magnetic noise insusceptibility, while errors increase for superposition input states and entangled states.",
+          "page": 5,
+          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p5:4",
+          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
+          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
+        },
+        {
+          "claim": "Repetitive benchmarking exhibits an additional modulation with a period of n = 4 for non-computational basis input states, which is a consequence of the charge-state SPAM error.",
+          "page": 6,
           "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p6:5",
           "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
           "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
         },
         {
-          "claim": "At the experimentally chosen \\OmegaRabi/(2\\pi) = 23.7 MHz, the largest error contribution of 55% is due to the unpolarized 14N spin.",
-          "page": 8,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p7:6",
+          "claim": "When adding charge-state initialization to repetitive benchmarking, the modulation is reduced, and a slightly elevated pEPG of 0.043 ± 0.027 is extracted.",
+          "page": 6,
+          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p6:5",
           "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
           "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
         },
         {
-          "claim": "The misaligned magnetic field makes up for 11% of the observed error, with crosstalk and leakage contributing 17%, demonstrating the efficacy of our pulse envelope shaping.",
-          "page": 8,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p7:6",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "The relative decoherence contribution, estimated from T2,XY8 = 454 \\mu s and 476 \\mu s per qubit, is 10%.",
-          "page": 8,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p7:6",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "We have experimentally demonstrated the highest entangling gate fidelity of F2q = (96.0 +- 2.5)% between solid-state electron spins at room temperature.",
-          "page": 8,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p7:6",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "Our analysis of the gate error sources reveals that 90% of those errors are coherent and correctable.",
-          "page": 8,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p7:6",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "The CVD film thickness is 20 \\mu m.",
-          "page": 9,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p8:7",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "A 12C-enriched (99.95%) high-purity (nitrogen concentration less than 1 ppb) diamond is used.",
-          "page": 9,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p8:7",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "To calculate time evolution from t0 to t, we approximate via the Riemann summation method by evaluating the Hamiltonian at N discrete time points.",
-          "page": 16,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p16:15",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "Readout results R(ρ) are obtained via the POVM element Eg({α_i}), utilizing a contrast parameter proportional to the spin contrast observed in experiment.",
-          "page": 16,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p16:15",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "For a πx pulse on NV center 1, pulses are chosen to have a sinusoidal shape with peak envelope amplitude Ω_max = (π/2)Ω_Rabi.",
-          "page": 16,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p16:15",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "Because of limitations of microwave hardware, pulses are never applied on both NV centers at the same time.",
-          "page": 16,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p16:15",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "The average effective single-qubit error is extracted as EPC1q = 0.085 ± 0.013, translating to an effective single-qubit gate fidelity of F1q = (99.23 ± 0.12)%.",
+          "claim": "The average effective single-qubit error is determined as EPC1q = 0.085 ± 0.013 from a modified two-qubit randomized benchmarking experiment, translating to an effective single-qubit gate fidelity of F1q = (99.23 ± 0.12)%.",
           "page": 17,
           "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p17:16",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "The dipole-dipole coupling of 119.8 kHz sets an upper limit of (9.54 ± 0.03) nm on the distance between the NV centers.",
-          "page": 21,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p21:20",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "After applying postselection with experimental settings tpcs = 3.5 ms and nthresh = 9, the (NV-, NV-) charge-state initialization fidelity increases from (39 ± 6)% to (83 ± 6)%.",
-          "page": 22,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p22:21",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "The SPAM error due to spin mixing is estimated to be 17% by dividing the simulated value at magnetic field setting 2 by the value at zero field.",
-          "page": 23,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p23:22",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "At zero magnetic field, the predicted spin initialization fidelity defined in the spin-1 manifold is 77%.",
-          "page": 23,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p23:22",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "The decoherence-limited entangling gate fidelity for the current experiment under room temperature XY8 decoupling is F2q,T2 = 0.986.",
-          "page": 25,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p25:24",
-          "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
-          "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
-        },
-        {
-          "claim": "Cryogenic operation at 4 K boosts T1 to the order of one hour, yielding a potential decoherence-limited gate fidelity of 1 - F2q,T2,4K ≈ 4 × 10^-6.",
-          "page": 25,
-          "chunk_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648:p25:24",
           "paper_id": "26e0df30047c596ad4e9114f0d11e2c3c8492648",
           "paper_title": "High-Fidelity Electron Spin Gates for Scaling Diamond Quantum Registers"
         }
@@ -2124,92 +1499,7 @@
       ],
       "relevance_score": 8,
       "relevance_reason": "Combines reinforcement learning with graph neural networks to solve qubit allocation and improve output fidelity in quantum circuits.",
-      "claims": [
-        {
-          "claim": "We combine reinforcement learning with a graph neural network (GNN)-based Q-network for analyzing both the connections and error rates of the graph-like backend of superconducting quantum computers to make mapping decisions, creating a Graph Neural Network Assisted Compilation (GNAQC) strategy.",
-          "page": 1,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p1:0",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "We train the architecture using a set of four backends and six circuits and find that GNAQC generally outperforms pre-existing qubit allocation algorithms, increasing final relative output fidelity by roughly 12.7%.",
-          "page": 1,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p1:0",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "Most NISQ devices contain from ten to one hundred noisy qubits, though many systems are on the smaller end of this range, containing only 5-24 qubits.",
-          "page": 2,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p2:1",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "We test GNAQC on two physical backends of 7 and 27 qubits using 6 different benchmarks and find that GNAQC can consistently provide better or comparable initial layouts to pre-existing methods.",
-          "page": 2,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p2:1",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "We demonstrate that GNAQC reduces the error of quantum circuits by providing more reliable layouts, finding a 12.7% relative increase in fidelity.",
-          "page": 2,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p2:1",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "Qiskit natively contains four different allocation methods: trivial, dense, noise-adaptive, and sabre.",
-          "page": 6,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p6:5",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "We find that layout method closest to the best is inconsistent, and across all tested circuit sizes, we see situations where each of the trivial, noise-adaptive, and sabre methods are the closest to the experimentally identified best fidelity.",
-          "page": 7,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p7:6",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "The choice of initial layout can have a considerable impact on circuit fidelity, and pre-existing methods are inconsistent at choosing effective layouts.",
-          "page": 7,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p7:6",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "The total set of properties that we collect is found in Table 1, totaling 14 different error rates and gate lengths.",
-          "page": 8,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p8:7",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "The learned layout generally outperforms the pre-existing layouts for each benchmark at different algorithm sizes, yielding an average relative improvement in fidelity of approximately 12.7%.",
-          "page": 11,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p11:10",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "The value of look-ahead LA does not have a large impact on performance.",
-          "page": 12,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p12:11",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        },
-        {
-          "claim": "GNAQC performs in-line with other methods and scales better to larger qubit sizes than the sabre method.",
-          "page": 12,
-          "chunk_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e:p12:11",
-          "paper_id": "bb15ab89d88c4ca337d5d4af19c467d31d811f3e",
-          "paper_title": "Machine-Learning-Based Qubit Allocation for Error Reduction in Quantum Circuits"
-        }
-      ]
+      "claims": []
     },
     {
       "paper_id": "38192ccee850ba3b88e134803314fa3abe7f8adc",
@@ -2328,113 +1618,7 @@
       ],
       "relevance_score": 7,
       "relevance_reason": "Models noisy remote gates in distributed quantum computing and studies fidelity dependence on error parameters.",
-      "claims": [
-        {
-          "claim": "Distributing circuits across quantum processor modules enables the execution of circuits larger than the qubit count limitations of monolithic processors.",
-          "page": 0,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p1:0",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "Circuit cutting incurs an exponential growth of sub-circuit sampling and classical post-processing overhead with an increasing number of cuts.",
-          "page": 0,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p1:0",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "The entanglement-based gate teleportation approach does not inherently incur exponential sampling overhead, provided that quantum interconnects of requisite performance are available for generating high-fidelity Bell pairs.",
-          "page": 0,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p1:0",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "A 10-fold reduction in the present M2O transducer noise added figures would favor generating multipartite entangled states with remote gates over circuit cutting due to an exponential sampling overhead for the latter.",
-          "page": 0,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p1:0",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "Photonic entanglement of neutral atoms and trapped ions has been demonstrated with fidelity of 94-97% and link rates up to ~250 Hz.",
-          "page": 0,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p1:0",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "State-of-the-art transducers are expected to produce probabilistic, noisy Bell pairs with fidelity of ~50%.",
-          "page": 0,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p1:0",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "With transducer noise added (N_add) of 0.01-0.1, remote gates can achieve GHZ fidelity comparable with the circuit-cutting approach for a fixed shot budget, with multipartite entangled state generation being advantageous for remote gates.",
-          "page": 1,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p2:1",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "The primary source of error for remote gates is the Bell pair infidelity from noisy quantum links.",
-          "page": 1,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p2:1",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "For circuit cutting techniques, for a fixed shot budget, the fidelity degrades with an increasing number of cuts because maintaining target fidelity requires an exponentially larger number of samples for each sub-circuit.",
-          "page": 1,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p2:1",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "Local gate errors are implemented as a depolarization channel with 1-qubit gate fidelity of 0.99 and 2-qubit gate fidelity of 0.98.",
-          "page": 1,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p2:1",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "Four-qubit intermodule GHZ state fidelity is reported to be 92% when connecting superconducting qubit modules via cryogenic microwave links.",
-          "page": 1,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p2:1",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "Transducer bandwidth B is fixed to 10 MHz and operation time T to 1 microsecond.",
-          "page": 2,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p3:2",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "The conversion efficiency was fixed to 0.5, which is the highest conversion efficiency reported for a 3D electro-opto-mechanical device.",
-          "page": 2,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p3:2",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "For the case of N CNOT gate-cuts, the N_shots required to reconstruct the original circuits with a reconstruction error epsilon scales as O(9^N / epsilon^2).",
-          "page": 4,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p5:4",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        },
-        {
-          "claim": "Transducer efficiencies as high as 0.47 have been reported for a 3D transducer, but the device exhibited an N_add of 3.2.",
-          "page": 5,
-          "chunk_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8:p6:5",
-          "paper_id": "ab52e5a9bb47b5ae4ad286d3ad779bd841ebb9b8",
-          "paper_title": "Gate Teleportation vs. Circuit Cutting in Distributed Quantum Computing"
-        }
-      ]
+      "claims": []
     },
     {
       "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
@@ -2537,106 +1721,7 @@
       ],
       "relevance_score": 7,
       "relevance_reason": "Demonstrates high fidelities for 2-qubit gate sets and Bell states in gate-defined quantum dots.",
-      "claims": [
-        {
-          "claim": "We employ advanced protocols like heralded initialization and calibration via gate set tomography (GST), to push fidelities of the full 2-qubit gate set above 99%, including state preparation and measurement (SPAM).",
-          "page": 1,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p1:0",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "We demonstrate a 97.17% Bell state fidelity without correcting for readout errors and violate Bell’s inequality using direct parity readout with a Bell signal of S = 2.731.",
-          "page": 1,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p1:0",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "Our measurements exceed the classical limit even at 1.1 K or entanglement lifetimes of 100 microseconds.",
-          "page": 1,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p1:0",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "We violate Bell’s inequality in gate-defined quantum dots close to the theoretical quantum correlation limit and with 86 sigma confidence.",
-          "page": 2,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p2:1",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "Even at elevated temperatures of 1.1 K, we measure Bell signals above the classical limit S = 2, with over 16 sigma confidence.",
-          "page": 2,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p2:1",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "We apply a dynamical decoupling sequence to store the generated entanglement for over 100 microseconds.",
-          "page": 2,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p2:1",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "Using informed phase corrections based on GST results, we can push all average gate fidelities above the commonly targeted threshold of 99%, including the state preparation and measurement (SPAM) fidelity.",
-          "page": 3,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p3:2",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "The single-qubit gate fidelities are FX,Q1 = 99.98 ± 0.22% and FX,Q2 = 99.93 ± 0.20%.",
-          "page": 4,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p4:3",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "We confirm the generation of the four maximally entangled Bell states with fidelities of FΦ+ = 97.17 ± 0.31%, FΦ- = 96.94 ± 0.26%, FΨ+ = 96.50 ± 0.38%, and FΨ- = 96.47 ± 0.31%, uncorrected for SPAM errors and at base temperature T = 0.1 K.",
-          "page": 4,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p4:3",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "The measured Bell signals SΦ+ = 2.731(88), SΦ- = 2.703(114), SΨ+ = 2.659(113), and SΨ- = 2.675(115) are up to more than 16 sigma above the classical limit S = 2 from Bell’s theorem.",
-          "page": 4,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p4:3",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "At base temperature T = 0.1 K we achieve SΦ+ = 2.721(30), SΦ- = 2.711(28), SΨ+ = 2.703(32), and SΨ- = 2.693(16) with up to more than 86 sigma above the classical limit S = 2 from Bell’s theorem using quantum state tomography.",
-          "page": 5,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p5:4",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "We extend the violation of Bell’s inequality to operation temperatures of up to 1.1 K, maintaining Bell signals above the classical limit.",
-          "page": 5,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p5:4",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "We observe that the Bell states undergo decoherence and stay above the classical limit (S > 2) for about 15 microseconds during Ramsey measurements.",
-          "page": 5,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p5:4",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        },
-        {
-          "claim": "The lifetime of maximally entangled Bell states can be prolonged by an order of magnitude to above 100 microseconds when applying a Hahn echo refocusing pulse.",
-          "page": 5,
-          "chunk_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10:p5:4",
-          "paper_id": "f56adec68b99f3ed5eafbcf7c2c21c26ed41aa10",
-          "paper_title": "Bell inequality violation in gate-defined quantum dots"
-        }
-      ]
+      "claims": []
     }
   ]
 }

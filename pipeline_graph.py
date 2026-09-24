@@ -161,13 +161,11 @@ def human_checkpoint_node(state: LitReviewState) -> dict:
 def reader_node(state: LitReviewState) -> dict:
     approved = state["approved_papers"]
     log.info("=== [Reader Agent] Reading %d papers ===", len(approved))
-
+    extract_claims_for_all_papers(approved)
     for paper in approved:
-        extract_claims_for_all_papers(paper)
-        log.info("  '%s': %d claims", paper["title"], len(paper["claims"]))
+        log.info("  '%s': %d claims", paper["title"], len(paper.get("claims", [])))
 
     return {"approved_papers": approved, "claims_extracted": True}
-
 
 # --------------------------------------------------------------------------
 # Node 5: Contradiction (local embeddings + LLM verdicts)
