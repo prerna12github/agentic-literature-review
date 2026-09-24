@@ -13,8 +13,6 @@ load_dotenv()
 
 log = logging.getLogger(__name__)
 
-# FIXED: real model name (gemini-3.5-flash-lite does not exist).
-# Check .env too — a stale GEMINI_MODEL there overrides this default.
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -22,25 +20,15 @@ if not API_KEY:
     raise RuntimeError("GEMINI_API_KEY not set — add it to your .env file")
 
 client = genai.Client(api_key=API_KEY)
-
-# Calibrated for all-MiniLM-L6-v2 (NOT the old Gemini scale — see docstring).
-# Raise it if unrelated claims get grouped; lower it if related claims
-# get split apart. Use the diagnostic printout to tune from evidence.
 SIMILARITY_THRESHOLD = 0.55
 
-# Politeness delay between LLM verdict calls
 BATCH_DELAY_SECONDS = 1.0
-
-# Verdict cache: re-running with a tweaked threshold shouldn't re-spend
-# LLM quota on groups whose claim sets haven't changed.
 VERDICT_CACHE_FILE = "verdict_cache.json"
 
-# Local embedding model (lazy-loaded so import stays fast)
 _embedder: SentenceTransformer | None = None
 
 
 def _get_embedder() -> SentenceTransformer:
-    """Load the local embedding model once, on first use."""
     global _embedder
     if _embedder is None:
         print("Loading local embedding model (all-MiniLM-L6-v2)...")
@@ -49,11 +37,7 @@ def _get_embedder() -> SentenceTransformer:
 
 
 def get_embeddings(texts: list[str]) -> list[list[float]]:
-    """
-    LOCAL embeddings via sentence-transformers — no API, no quota, no
-    rate limits. Returns embeddings in input order, unit-normalized
-    (so cosine similarity is a plain dot product under the hood).
-    """
+   
     model = _get_embedder()
     vectors = model.encode(
         texts,
@@ -64,10 +48,6 @@ def get_embeddings(texts: list[str]) -> list[list[float]]:
 
 
 def _parse_llm_object(raw_text: str) -> dict:
-    """
-    Extract a JSON OBJECT (not array) from an LLM response, tolerating
-    fences/prose — slices between the first '{' and last '}'.
-    """
     raw_text = raw_text.strip()
     start, end = raw_text.find("{"), raw_text.rfind("}")
     if start == -1 or end == -1 or end < start:
@@ -76,12 +56,6 @@ def _parse_llm_object(raw_text: str) -> dict:
 
 
 def flatten_claims(papers: list[dict]) -> list[dict]:
-    """
-    Step 3's output is organized by paper. For grouping across papers we
-    flatten into one list — carrying FULL provenance (paper_id, chunk_id,
-    paper_title, page) so the Writer Agent can still cite each claim
-    exactly after all the reshuffling in this step.
-    """
     flat = []
     for paper in papers:
         for claim in paper.get("claims", []):
@@ -96,10 +70,6 @@ def flatten_claims(papers: list[dict]) -> list[dict]:
 
 
 def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
-    """
-    How similar two embedding vectors are: -1 (opposite) to 1 (identical
-    direction/meaning). The standard way to compare embeddings.
-    """
     dot_product = sum(a * b for a, b in zip(vec_a, vec_b))
     magnitude_a = math.sqrt(sum(a * a for a in vec_a))
     magnitude_b = math.sqrt(sum(b * b for b in vec_b))
@@ -115,13 +85,6 @@ def group_similar_claims(
     embeddings: list[list[float]],
     threshold: float = SIMILARITY_THRESHOLD,
 ) -> list[list[dict]]:
-    """
-    Groups claims by meaning similarity (greedy leader approach):
-    each claim joins the group whose FIRST claim it's most similar to,
-    or starts a new group if none pass the threshold.
-
-    Pure local math — zero API calls.
-    """
     assert len(claims) == len(embeddings), (
         f"claims/embeddings mismatch: {len(claims)} vs {len(embeddings)}"
     )
@@ -149,13 +112,6 @@ def group_similar_claims(
 
 
 def _diagnose_embeddings(embeddings: list[list[float]]) -> None:
-    """
-    Prints the sample pairwise-similarity spread so the threshold can be
-    tuned from evidence. Healthy MiniLM output: unrelated pairs land
-    ~0.1-0.4; if nearly all pairs exceed the threshold, embeddings are
-    degenerate; if the spread is sane but grouping fails, the threshold
-    is simply too high/low.
-    """
     n = min(len(embeddings), 8)
     if n < 2:
         return
@@ -172,7 +128,6 @@ def _diagnose_embeddings(embeddings: list[list[float]]) -> None:
 
 
 def _group_cache_key(group: list[dict]) -> str:
-    """Stable hash of a group's claims, for the verdict cache."""
     canonical = json.dumps(
         sorted(c["claim"] for c in group),
         ensure_ascii=False,
@@ -192,18 +147,10 @@ def _save_verdict_cache(cache: dict) -> None:
         json.dump(cache, f)
 
 def _involves_multiple_papers(group: list[dict]) -> bool:
-    """Only worth an LLM contradiction-check if claims come from different papers."""
     return len({c["paper_title"] for c in group}) > 1        
 
 
 def check_group_for_contradiction(group: list[dict]) -> dict:
-    """
-    Sends one group of related claims (from different papers) to the LLM
-    and asks whether they agree or conflict. Cached on disk so threshold
-    re-tuning doesn't re-spend quota on unchanged groups.
-
-    Returns: {"verdict": "agree"|"conflict"|"unclear", "explanation": "..."}
-    """
     cache = _load_verdict_cache()
     key = _group_cache_key(group)
     if key in cache:
@@ -246,8 +193,6 @@ exact format:
             verdict = {"verdict": "unclear",
                        "explanation": "Could not parse LLM response."}
 
-    # Validate the verdict value — an unexpected string from the LLM
-    # shouldn't poison the downstream stats/output
     if verdict.get("verdict") not in ("agree", "conflict", "unclear"):
         verdict["verdict"] = "unclear"
 
@@ -257,11 +202,6 @@ exact format:
 
 
 def load_step3_results(input_file: str) -> tuple[list[dict], str | None]:
-    """
-    Unwrap Step 3's wrapped output
-        {"research_question": ..., "stats": ..., "papers": [...]}
-    Bare-list format supported for backward compatibility.
-    """
     with open(input_file, "r") as f:
         data = json.load(f)
 
@@ -272,10 +212,7 @@ def load_step3_results(input_file: str) -> tuple[list[dict], str | None]:
 
 def run_contradiction_step(input_file: str = "claims_results.json",
                            output_file: str = "contradiction_results.json") -> list[dict]:
-    """
-    Full Step 4 pipeline: load Step 3's claims, group similar ones, check
-    cross-paper groups for agreement/conflict, save the result.
-    """
+    
     papers, research_question = load_step3_results(input_file)
 
     all_claims = flatten_claims(papers)
@@ -286,25 +223,19 @@ def run_contradiction_step(input_file: str = "claims_results.json",
     n_papers = len({c["paper_title"] for c in all_claims})
     print(f"Loaded {len(all_claims)} claims from {n_papers} papers.\n")
 
-    # --- Step A: embed ALL claims locally (free, no quota) ---
     print("Embedding claims (local sentence-transformer)...")
     embeddings = get_embeddings([c["claim"] for c in all_claims])
     print(f"DIAGNOSTIC: {len(all_claims)} claims, {len(embeddings)} embeddings")
     _diagnose_embeddings(embeddings)
 
-    # --- Step B: group by similarity (pure local math) ---
     print("Grouping claims by similarity...")
     groups = group_similar_claims(all_claims, embeddings)
     print(f"Formed {len(groups)} groups.\n")
-
-    # --- Step C: LLM check on cross-paper groups ---
     results = []
     checked_count = 0
 
     for group in groups:
         if len(group) < 2 or not _involves_multiple_papers(group):
-            # Nothing to compare — a lone claim, or all claims came from
-            # the same paper (a paper agreeing with itself isn't interesting)
             continue
 
         checked_count += 1
@@ -314,7 +245,7 @@ def run_contradiction_step(input_file: str = "claims_results.json",
         time.sleep(BATCH_DELAY_SECONDS)
 
         results.append({
-            "claims": group,   # full provenance preserved for the Writer
+            "claims": group,   
             "verdict": verdict["verdict"],
             "explanation": verdict["explanation"],
         })
@@ -322,8 +253,6 @@ def run_contradiction_step(input_file: str = "claims_results.json",
     n_conflicts = sum(1 for r in results if r["verdict"] == "conflict")
     n_agree = sum(1 for r in results if r["verdict"] == "agree")
     n_unclear = sum(1 for r in results if r["verdict"] == "unclear")
-
-    # Consistent wrapped output schema for Step 5 (Writer Agent)
     output = {
         "research_question": research_question,
         "stats": {
