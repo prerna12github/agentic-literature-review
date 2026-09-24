@@ -7,7 +7,7 @@ from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel, Field
 
 from api.review_store import store
-from api.pipeline_runner import start_review_thread, resume_review_thread
+from api.pipeline_runner import start_review_thread, resume_review_thread, _retry_review_thread
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 log = logging.getLogger(__name__)
