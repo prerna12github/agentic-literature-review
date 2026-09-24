@@ -150,6 +150,18 @@ def submit_decision(review_id: str, req: DecisionRequest):
     return store.get(review_id)
 
 
+@app.post("/reviews/{review_id}/retry", response_model=ReviewOut)
+def retry_review(review_id: str):
+    review = _review_or_404(review_id)
+
+    if review.status != "failed":
+        raise HTTPException(409, f"Review is '{review.status}' — "
+                                 "only failed reviews can be retried.")
+
+    store.update(review_id, status="running", detail="Retrying from checkpoint.")
+    _retry_review_thread(review_id)
+    return store.get(review_id)
+
 @app.get("/reviews/{review_id}/report", response_class=PlainTextResponse)
 def get_report(review_id: str):
     review = _review_or_404(review_id)
