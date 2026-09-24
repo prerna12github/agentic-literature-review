@@ -41,6 +41,14 @@ def resume_review_thread(review_id: str, decision: dict) -> None:
     )
     t.start()
 
+def _retry_review_thread(review_id: str) -> None:
+    t = threading.Thread(
+        target=_run_until_pause_or_end,
+        args=(review_id, None),     # None input = continue, don't restart
+        daemon=True,
+    )
+    t.start()    
+
 
 def _run_until_pause_or_end(review_id: str, graph_input) -> None:
     review = store.get(review_id)
