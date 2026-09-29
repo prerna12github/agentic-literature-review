@@ -168,7 +168,7 @@ def load_step1_results(input_file: str) -> tuple[list[dict], str | None]:
 
     if isinstance(data, dict) and "papers" in data:
         return data["papers"], data.get("query")
-    return data, None  # old bare-list format
+    return data, None 
 
 
 def run_filter_step(
