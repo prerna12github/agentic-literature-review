@@ -1,19 +1,3 @@
-"""
-filter_agent.py — Step 2: Filter Agent
----------------------------------------
-Loads Step 1's output (results.json), asks an LLM to score each paper's
-relevance to the research question, shows the ranked list, and pauses for
-HUMAN APPROVAL before anything expensive happens downstream (reading full
-papers). This is the project's human-in-the-loop checkpoint.
-
-Flow:
-    load results.json -> LLM scoring (title+abstract only, triage)
-    -> show ranked list -> human approves/removes -> filtered_results.json
-
-Usage:
-    python filter_agent.py
-"""
-
 import json
 import os
 import logging
@@ -25,10 +9,8 @@ load_dotenv()
 
 log = logging.getLogger(__name__)
 
-# FIXED: real model name as fallback (gemini-3.5-flash-lite does not exist)
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
-# FIXED: fail fast with a clear message instead of a cryptic API error later
 API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:
     raise RuntimeError(
@@ -37,29 +19,15 @@ if not API_KEY:
     )
 
 client = genai.Client(api_key=API_KEY)
-
-# Guard: score at most this many papers in one LLM call
 MAX_PAPERS_TO_SCORE = 40
 
 
 def _parse_llm_json(raw_text: str) -> list:
-    """
-    Extract a JSON array from an LLM response, tolerating markdown fences
-    or stray prose around it.
 
-    FIXED: the old approach (raw_text.strip('`') + .replace('json', '', 1))
-    could delete the word 'json' from inside paper titles/reasons. Now we
-    slice between the first '[' and the last ']' — which is always safe
-    because the expected output IS an array.
-    """
     raw_text = raw_text.strip()
-
-    # Drop markdown fences if present (```json ... ```)
     if raw_text.startswith("```"):
-        # take content between the opening and closing fence
         parts = raw_text.split("```")
         raw_text = parts[1] if len(parts) > 1 else raw_text
-        # the fence line may include the language tag: "json\n[...]"
         if raw_text.lower().lstrip().startswith("json"):
             raw_text = raw_text.lstrip()[4:]
 
@@ -74,12 +42,6 @@ def score_papers_with_llm(
     papers: list[dict],
     research_question: str,
 ) -> list[dict]:
-    """
-    Ask the LLM to score each paper's relevance (1-10) to the research
-    question, then merge scores back onto the paper dicts.
-    """
-
-    # Triage only needs title + abstract — never send full text here
     paper_summaries = []
     for i, p in enumerate(papers):
         abstract = p.get("abstract") or "(no abstract available)"
@@ -108,9 +70,6 @@ exact format:
   {{"index": 0, "relevance_score": 8, "relevance_reason": "Directly proposes a method for X."}},
   {{"index": 1, "relevance_score": 3, "relevance_reason": "Only tangentially related, focuses on Y instead."}}
 ]"""
-
-    # NEW: use Gemini's native JSON mode — this forces valid JSON output,
-    # making fence-stripping problems mostly disappear.
     response = client.models.generate_content(
         model=MODEL,
         contents=prompt,
@@ -122,20 +81,14 @@ exact format:
     try:
         scores = json.loads(response.text.strip())
     except json.JSONDecodeError:
-        # Fallback: defensive extraction (in case JSON mode is ever
-        # unavailable or the model still wraps the array in prose)
         log.warning("JSON mode output was not clean JSON — using fallback parser.")
         scores = _parse_llm_json(response.text)
-
-    # Warn if the LLM returned a different number of scores than papers,
-    # so a partially parsed response doesn't slip by silently
     if len(scores) != len(papers):
         log.warning(
             "LLM returned %d scores for %d papers; unscored papers get 0.",
             len(scores), len(papers),
         )
 
-    # Merge scores back onto the original paper dicts, matched by index
     score_by_index = {s["index"]: s for s in scores}
     for i, paper in enumerate(papers):
         match = score_by_index.get(i, {})
@@ -148,7 +101,6 @@ exact format:
 
 
 def show_ranked_list(papers: list[dict]) -> list[dict]:
-    """Print papers sorted by relevance score, highest first. Returns the ranked list."""
     ranked = sorted(
         papers,
         key=lambda p: p.get("relevance_score", 0),
@@ -178,11 +130,6 @@ def show_ranked_list(papers: list[dict]) -> list[dict]:
 
 
 def human_checkpoint(ranked_papers: list[dict]) -> list[dict]:
-    """
-    Pause for human approval. Kept as its own function on purpose:
-    when this becomes a LangGraph node, only the I/O mechanism
-    (CLI input -> interrupt()) changes — the approve/remove logic stays.
-    """
     print("\n" + "-" * 70)
     print("Approve this list, or remove papers you don't want carried forward.")
     print("  - Press Enter (or type 'y') to approve ALL papers as shown above")
@@ -199,8 +146,6 @@ def human_checkpoint(ranked_papers: list[dict]) -> list[dict]:
     if choice in ("", "y"):
         print(f"Approved all {len(ranked_papers)} papers.")
         return ranked_papers
-
-    # Parse comma-separated indices to remove
     try:
         remove_indices = {int(x.strip()) for x in choice.split(",") if x.strip()}
     except ValueError:
@@ -218,24 +163,12 @@ def human_checkpoint(ranked_papers: list[dict]) -> list[dict]:
 
 
 def load_step1_results(input_file: str) -> tuple[list[dict], str | None]:
-    """
-    Load Step 1's output file.
-
-    FIXED: results.json is now a wrapped object
-        {"query": ..., "stats": ..., "papers": [...]}
-    not a bare list — so we unwrap it here. Also supports the old
-    bare-list format for backward compatibility.
-
-    Returns:
-        (papers, saved_query) — saved_query is the original research
-        question from Step 1, so the user doesn't have to retype it.
-    """
     with open(input_file, "r") as f:
         data = json.load(f)
 
     if isinstance(data, dict) and "papers" in data:
         return data["papers"], data.get("query")
-    return data, None  # old bare-list format
+    return data, None 
 
 
 def run_filter_step(
@@ -243,13 +176,8 @@ def run_filter_step(
     output_file: str = "filtered_results.json",
     research_question: str = None,
 ) -> list[dict]:
-    """
-    Full Step 2 pipeline: load Step 1's output, score with LLM, show ranked
-    list, pause for human approval, save the approved subset.
-    """
     papers, saved_query = load_step1_results(input_file)
 
-    # FIXED: reuse the question saved by Step 1 instead of always asking
     if research_question is None:
         if saved_query:
             research_question = saved_query
@@ -260,7 +188,6 @@ def run_filter_step(
         else:
             research_question = input("Enter your research question: ").strip()
 
-    # Guard against blowing the context window on very large candidate lists
     if len(papers) > MAX_PAPERS_TO_SCORE:
         print(
             f"Note: {len(papers)} candidates found — scoring the top "
@@ -275,9 +202,6 @@ def run_filter_step(
 
     ranked = show_ranked_list(scored_papers)
     approved = human_checkpoint(ranked)
-
-    # Save in the same wrapped schema as Step 1, so Step 3 (Reader Agent)
-    # loads one consistent format everywhere.
     output = {
         "research_question": research_question,
         "stats": {
