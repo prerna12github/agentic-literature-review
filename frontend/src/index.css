@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-border: #e2e8f0;
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #475569;
+  }
+
+  .dark {
+    --color-bg: #090d16;
+    --color-surface: #0f172a;
+    --color-border: #1e293b;
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #94a3b8;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+/* Markdown prose styling */
+.report-markdown {
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: inherit;
+}
+.report-markdown h1 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  letter-spacing: -0.025em;
+}
+.report-markdown h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.015em;
+}
+.report-markdown h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.report-markdown p {
+  margin-top: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+.report-markdown ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.report-markdown ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.report-markdown li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+.report-markdown blockquote {
+  border-left: 4px solid #6366f1;
+  padding-left: 1rem;
+  margin: 1.25rem 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+.report-markdown hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+.report-markdown strong {
+  font-weight: 600;
+}
