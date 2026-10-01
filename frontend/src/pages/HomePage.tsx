@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Sparkles, 
   ArrowRight, 
   Loader2, 
   Clock, 
@@ -77,11 +76,6 @@ export const HomePage: React.FC = () => {
       
       {/* 1. Large Centered Hero */}
       <section className="text-center space-y-6 pt-4 sm:pt-8 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/60">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-          <span>Autonomous Scholarly Synthesis</span>
-        </div>
-
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
           Five AI agents. One human checkpoint.{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-500">

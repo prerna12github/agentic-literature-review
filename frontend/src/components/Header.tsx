@@ -35,9 +35,6 @@ export const Header: React.FC = () => {
                 <span className="font-bold text-base tracking-tight text-slate-900 dark:text-white">
                   LitReview<span className="text-indigo-600 dark:text-indigo-400">Agent</span>
                 </span>
-                <span className="text-[10px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/50 font-semibold">
-                  Multi-Agent
-                </span>
               </div>
             </div>
           </Link>
