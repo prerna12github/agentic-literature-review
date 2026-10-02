@@ -3,14 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   ArrowRight, 
   Loader2, 
-  HelpCircle,
-  Sparkles,
-  Bot,
-  Scale,
-  Hand,
-  BookOpen,
-  Swords,
-  PenTool
+  HelpCircle 
 } from 'lucide-react';
 import { createReview } from '../api';
 import { useToast } from '../context/ToastContext';
@@ -21,15 +14,6 @@ const EXAMPLE_QUERIES = [
   'How do quantum error mitigation strategies compare for near-term NISQ devices?',
   'What are the most effective techniques for reducing hallucinations in retrieval-augmented generation?',
   'A comparative analysis of deep learning architectures for network intrusion detection systems',
-];
-
-const AGENT_PIPELINE = [
-  { name: 'Search', icon: Bot, desc: 'Scours arXiv & Semantic Scholar' },
-  { name: 'Filter', icon: Scale, desc: 'LLM relevance ranking' },
-  { name: 'Checkpoint', icon: Hand, desc: 'Human approval gate' },
-  { name: 'Reader', icon: BookOpen, desc: 'Full-text PDF claim extraction' },
-  { name: 'Contradiction', icon: Swords, desc: 'Cross-paper consensus & conflict' },
-  { name: 'Writer', icon: PenTool, desc: 'Synthesized cited report' },
 ];
 
 export const HomePage: React.FC = () => {
@@ -64,9 +48,9 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
       
-      {/* 1. Centered Hero Section */}
+      {/* Centered Hero Section */}
       <section className="text-center space-y-6 max-w-2xl mx-auto">
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
           Five AI agents. One human checkpoint.{' '}
@@ -137,40 +121,6 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
         </form>
-      </section>
-
-      {/* 2. Pipeline Features Card */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xs">
-        <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-          <h2 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">
-            Agentic Literature Review Pipeline
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
-          {AGENT_PIPELINE.map((agent, i) => {
-            const Icon = agent.icon;
-            return (
-              <div
-                key={i}
-                className="p-3.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800 space-y-1.5"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
-                    <Icon className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-900 dark:text-white">
-                    {agent.name}
-                  </span>
-                </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
-                  {agent.desc}
-                </p>
-              </div>
-            );
-          })}
-        </div>
       </section>
 
     </div>
