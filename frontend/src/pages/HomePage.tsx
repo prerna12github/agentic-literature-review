@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowRight, 
   Loader2, 
-  Clock, 
   HelpCircle,
-  Search,
-  BookOpen
+  Sparkles,
+  Bot,
+  Scale,
+  Hand,
+  BookOpen,
+  Swords,
+  PenTool
 } from 'lucide-react';
-import { createReview, listReviews } from '../api';
-import type { ReviewOut } from '../types';
-import { StatusBadge } from '../components/StatusBadge';
+import { createReview } from '../api';
 import { useToast } from '../context/ToastContext';
+import { useReviews } from '../context/ReviewsContext';
 
 const EXAMPLE_QUERIES = [
   'What are the state-of-the-art approaches to long-context window scaling in Transformers?',
@@ -20,30 +23,22 @@ const EXAMPLE_QUERIES = [
   'A comparative analysis of deep learning architectures for network intrusion detection systems',
 ];
 
+const AGENT_PIPELINE = [
+  { name: 'Search', icon: Bot, desc: 'Scours arXiv & Semantic Scholar' },
+  { name: 'Filter', icon: Scale, desc: 'LLM relevance ranking' },
+  { name: 'Checkpoint', icon: Hand, desc: 'Human approval gate' },
+  { name: 'Reader', icon: BookOpen, desc: 'Full-text PDF claim extraction' },
+  { name: 'Contradiction', icon: Swords, desc: 'Cross-paper consensus & conflict' },
+  { name: 'Writer', icon: PenTool, desc: 'Synthesized cited report' },
+];
+
 export const HomePage: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [reviews, setReviews] = useState<ReviewOut[]>([]);
-  const [isLoadingList, setIsLoadingList] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [filterText, setFilterText] = useState('');
   
   const { showToast } = useToast();
+  const { refreshReviews } = useReviews();
   const navigate = useNavigate();
-
-  const fetchHistory = async () => {
-    try {
-      const data = await listReviews();
-      setReviews(data);
-    } catch (err: any) {
-      showToast(err.message || 'Failed to load past reviews', 'error');
-    } finally {
-      setIsLoadingList(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHistory();
-  }, []);
 
   const handleStartReview = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -58,6 +53,8 @@ export const HomePage: React.FC = () => {
     try {
       const res = await createReview(cleanQuery);
       showToast('Literature review pipeline started!', 'success');
+      // Refresh sidebar list
+      refreshReviews();
       navigate(`/review/${encodeURIComponent(res.review_id)}`);
     } catch (err: any) {
       showToast(err.message || 'Failed to start review', 'error');
@@ -66,16 +63,11 @@ export const HomePage: React.FC = () => {
     }
   };
 
-  const filteredReviews = reviews.filter((r) =>
-    r.query.toLowerCase().includes(filterText.toLowerCase()) ||
-    r.review_id.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-16">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12">
       
-      {/* 1. Large Centered Hero */}
-      <section className="text-center space-y-6 pt-4 sm:pt-8 max-w-3xl mx-auto">
+      {/* 1. Centered Hero Section */}
+      <section className="text-center space-y-6 max-w-2xl mx-auto">
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
           Five AI agents. One human checkpoint.{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-500">
@@ -83,7 +75,7 @@ export const HomePage: React.FC = () => {
           </span>
         </h1>
 
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto">
           From a research question to a rigorous literature review in minutes.
           Search papers on arXiv & Semantic Scholar, triage relevance, approve sources,
           extract grounded claims, detect conflicts, and generate a synthesized report.
@@ -102,7 +94,7 @@ export const HomePage: React.FC = () => {
             
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
               <span className="text-[11px] text-slate-400 dark:text-slate-500 pl-3 hidden sm:inline">
-                Press button to launch background agent pipeline
+                Past reviews are accessible anytime in the left sidebar
               </span>
 
               <button
@@ -147,109 +139,38 @@ export const HomePage: React.FC = () => {
         </form>
       </section>
 
-      {/* 2. Review History Section */}
-      <section className="space-y-4 pt-4 border-t border-slate-200/80 dark:border-slate-800/80">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-              <Clock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <span>Review History</span>
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Select any past or running literature review to inspect agents and results
-            </p>
-          </div>
-
-          {/* Filter search */}
-          {reviews.length > 0 && (
-            <div className="relative w-full sm:w-64">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Filter reviews..."
-                value={filterText}
-                onChange={(e) => setFilterText(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-          )}
+      {/* 2. Pipeline Features Card */}
+      <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xs">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">
+            Agentic Literature Review Pipeline
+          </h2>
         </div>
 
-        {/* Reviews List / Table */}
-        {isLoadingList ? (
-          <div className="space-y-3">
-            {[1, 2, 3].map((n) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
+          {AGENT_PIPELINE.map((agent, i) => {
+            const Icon = agent.icon;
+            return (
               <div
-                key={n}
-                className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 animate-pulse space-y-2.5"
+                key={i}
+                className="p-3.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800 space-y-1.5"
               >
-                <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-1/4"></div>
-                <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-3/4"></div>
-              </div>
-            ))}
-          </div>
-        ) : reviews.length === 0 ? (
-          <div className="text-center py-12 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 p-6 space-y-3">
-            <BookOpen className="w-10 h-10 text-slate-400 mx-auto" />
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-              No literature reviews yet
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-              Ask your first research question above to initiate the 5-agent pipeline with human approval.
-            </p>
-          </div>
-        ) : filteredReviews.length === 0 ? (
-          <div className="text-center py-8 text-xs text-slate-500">
-            No reviews matching "{filterText}"
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filteredReviews.map((r) => {
-              const formattedDate = new Date(r.created_at).toLocaleString(undefined, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              });
-
-              return (
-                <div
-                  key={r.review_id}
-                  onClick={() => navigate(`/review/${encodeURIComponent(r.review_id)}`)}
-                  className="group p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:border-indigo-400 dark:hover:border-indigo-500/70 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
-                  <div className="space-y-1.5 flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <StatusBadge status={r.status} />
-                      <span className="text-[11px] font-mono text-slate-400 dark:text-slate-500">
-                        {r.review_id}
-                      </span>
-                      <span className="text-[11px] text-slate-400 dark:text-slate-500">
-                        • {formattedDate}
-                      </span>
-                    </div>
-
-                    <h3 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition leading-snug">
-                      {r.query}
-                    </h3>
-
-                    {r.detail && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                        {r.detail}
-                      </p>
-                    )}
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
+                    <Icon className="w-3.5 h-3.5" />
                   </div>
-
-                  <div className="shrink-0 flex items-center gap-2 text-xs font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform">
-                    <span>Inspect</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
+                    {agent.name}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
-        )}
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+                  {agent.desc}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
     </div>
