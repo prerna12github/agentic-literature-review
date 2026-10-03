@@ -54,7 +54,7 @@ export const HomePage: React.FC = () => {
       <section className="text-center space-y-6 max-w-2xl mx-auto">
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
           Five AI agents. One human checkpoint.{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-500">
+          <span className="text-indigo-600 dark:text-indigo-400">
             Every claim cited.
           </span>
         </h1>
