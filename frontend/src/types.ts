@@ -8,6 +8,17 @@ export type ReviewStatus =
 
 export type PdfStatus = 'downloaded' | 'abstract_only' | 'not_attempted';
 
+export interface AgentNodeInfo {
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  summary?: string;
+}
+
+export interface ActivityLog {
+  timestamp: string;
+  agent: string;
+  message: string;
+}
+
 export interface ReviewOut {
   review_id: string;
   query: string;
@@ -15,6 +26,8 @@ export interface ReviewOut {
   detail: string;
   report_path?: string | null;
   created_at: string;
+  node_status?: Record<string, AgentNodeInfo>;
+  logs?: ActivityLog[];
 }
 
 export interface PaperCandidate {

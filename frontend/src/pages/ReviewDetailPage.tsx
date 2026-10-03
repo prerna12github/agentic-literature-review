@@ -230,10 +230,14 @@ export const ReviewDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Centerpiece: Animated Pipeline Graph */}
+      {/* Two-Column Progress Layout: Vertical Agent Timeline + Live Console */}
       <PipelineVisualizer
         status={review.status}
         detail={review.detail}
+        nodeStatus={review.node_status}
+        logs={review.logs}
+        createdAt={review.created_at}
+        query={review.query}
       />
 
       {/* STATE 1: FAILED STATE */}
@@ -274,7 +278,7 @@ export const ReviewDetailPage: React.FC = () => {
         />
       )}
 
-      {/* STATE 3: COMPLETED STATE */}
+      {/* STATE 3: COMPLETED STATE (Stats Cards & Full Markdown Report) */}
       {review.status === 'completed' && reportMarkdown && (
         <CompletedReportView
           reportMarkdown={reportMarkdown}
@@ -291,7 +295,7 @@ export const ReviewDetailPage: React.FC = () => {
             Agents Actively Working in Background
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-            This page polls every 5 seconds. If the pipeline pauses for your review, the Human Checkpoint approval station will appear automatically.
+            This page polls every 5 seconds. When the pipeline pauses for your review, the Human Checkpoint approval station will appear automatically.
           </p>
         </div>
       )}

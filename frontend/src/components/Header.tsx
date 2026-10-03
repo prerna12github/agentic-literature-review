@@ -51,9 +51,6 @@ export const Header: React.FC = () => {
               <span className="font-semibold text-base tracking-tight text-slate-900 dark:text-white">
                 LitReview
               </span>
-              <span className="text-xs font-normal text-slate-500 dark:text-slate-400">
-                Agent
-              </span>
             </div>
           </Link>
         </div>
