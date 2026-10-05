@@ -135,3 +135,23 @@
 .report-markdown strong {
   font-weight: 600;
 }
+
+/* Print Styles */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  header,
+  aside,
+  nav,
+  button,
+  .no-print,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+  .report-markdown {
+    font-size: 10.5pt !important;
+    line-height: 1.6 !important;
+  }
+}
