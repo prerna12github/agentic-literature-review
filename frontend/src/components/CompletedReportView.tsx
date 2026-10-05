@@ -192,161 +192,104 @@ export const CompletedReportView: React.FC<CompletedReportViewProps> = ({
             </p>
           </div>
 
-          {/* Download Action Controls */}
-          <div className="flex items-center flex-wrap gap-2 relative" ref={dropdownRef}>
-            {/* Quick 1-Click Buttons for most requested formats */}
-            <div className="hidden sm:inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800/80 p-0.5 border border-slate-200 dark:border-slate-700/60">
-              <button
-                type="button"
-                onClick={() => handleExport('pdf')}
-                disabled={exportingFormat !== null}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:shadow-xs transition inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                title="Download academic PDF document"
-              >
-                {exportingFormat === 'pdf' ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-rose-500" />
-                ) : lastDownloaded === 'pdf' ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-500" />
-                ) : (
-                  <span className="w-2 h-2 rounded-full bg-rose-500" />
-                )}
-                <span>PDF</span>
-              </button>
+          {/* Download Action Dropdown Button */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setDropdownOpen((prev) => !prev)}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 shadow-sm shadow-indigo-600/20 transition cursor-pointer"
+            >
+              {exportingFormat ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              <span>Download Report</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  dropdownOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
 
-              <button
-                type="button"
-                onClick={() => handleExport('docx')}
-                disabled={exportingFormat !== null}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:shadow-xs transition inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                title="Download editable Microsoft Word document"
-              >
-                {exportingFormat === 'docx' ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-500" />
-                ) : lastDownloaded === 'docx' ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-500" />
-                ) : (
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
-                )}
-                <span>DOCX</span>
-              </button>
+            {/* Format Selection Dropdown Popover */}
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-76 sm:w-84 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800/80 mb-1">
+                  <p className="text-xs font-bold text-slate-900 dark:text-white">
+                    Export Report
+                  </p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Select document format to download
+                  </p>
+                </div>
 
-              <button
-                type="button"
-                onClick={() => handleExport('md')}
-                disabled={exportingFormat !== null}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:shadow-xs transition inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                title="Download raw Markdown document"
-              >
-                {exportingFormat === 'md' ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-500" />
-                ) : lastDownloaded === 'md' ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-500" />
-                ) : (
-                  <span className="w-2 h-2 rounded-full bg-indigo-500" />
-                )}
-                <span>MD</span>
-              </button>
-            </div>
+                <div className="space-y-0.5">
+                  {FORMAT_OPTIONS.map((fmt) => {
+                    const Icon = fmt.icon;
+                    const isBusy = exportingFormat === fmt.id;
+                    const isDone = lastDownloaded === fmt.id;
 
-            {/* Main Dropdown Button */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setDropdownOpen((prev) => !prev)}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 shadow-sm shadow-indigo-600/20 transition cursor-pointer"
-              >
-                {exportingFormat ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <Download className="w-3.5 h-3.5" />
-                )}
-                <span>Download Report</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    dropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-
-              {/* Format Selection Dropdown Popover */}
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-76 sm:w-84 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                  <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800/80 mb-1">
-                    <p className="text-xs font-bold text-slate-900 dark:text-white">
-                      Export Report
-                    </p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                      Select document format to download
-                    </p>
-                  </div>
-
-                  <div className="space-y-0.5">
-                    {FORMAT_OPTIONS.map((fmt) => {
-                      const Icon = fmt.icon;
-                      const isBusy = exportingFormat === fmt.id;
-                      const isDone = lastDownloaded === fmt.id;
-
-                      return (
-                        <button
-                          key={fmt.id}
-                          type="button"
-                          onClick={() => handleExport(fmt.id)}
-                          disabled={exportingFormat !== null}
-                          className="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/70 text-left transition group cursor-pointer disabled:opacity-50"
-                        >
-                          <div className="mt-0.5 p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 shrink-0">
-                            {isBusy ? (
-                              <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
-                            ) : isDone ? (
-                              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                            ) : (
-                              <Icon className="w-4 h-4" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-1">
-                              <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                                {fmt.label}
-                              </span>
-                              <span
-                                className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md ${fmt.badgeBg} ${fmt.badgeText}`}
-                              >
-                                {fmt.extension}
-                              </span>
-                            </div>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
-                              {fmt.description}
-                            </p>
-                          </div>
-                        </button>
-                      );
-                    })}
-
-                    {/* Native Print Option */}
-                    <div className="pt-1.5 border-t border-slate-100 dark:border-slate-800/80 mt-1">
+                    return (
                       <button
+                        key={fmt.id}
                         type="button"
-                        onClick={() => handleExport('print')}
+                        onClick={() => handleExport(fmt.id)}
                         disabled={exportingFormat !== null}
                         className="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/70 text-left transition group cursor-pointer disabled:opacity-50"
                       >
                         <div className="mt-0.5 p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 shrink-0">
-                          <Printer className="w-4 h-4" />
+                          {isBusy ? (
+                            <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                          ) : isDone ? (
+                            <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                          ) : (
+                            <Icon className="w-4 h-4" />
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                            Print / Browser PDF
-                          </span>
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                              {fmt.label}
+                            </span>
+                            <span
+                              className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md ${fmt.badgeBg} ${fmt.badgeText}`}
+                            >
+                              {fmt.extension}
+                            </span>
+                          </div>
                           <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
-                            Open native system print dialog
+                            {fmt.description}
                           </p>
                         </div>
                       </button>
-                    </div>
+                    );
+                  })}
+
+                  {/* Native Print Option */}
+                  <div className="pt-1.5 border-t border-slate-100 dark:border-slate-800/80 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleExport('print')}
+                      disabled={exportingFormat !== null}
+                      className="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/70 text-left transition group cursor-pointer disabled:opacity-50"
+                    >
+                      <div className="mt-0.5 p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 shrink-0">
+                        <Printer className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                          Print / Browser PDF
+                        </span>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
+                          Open native system print dialog
+                        </p>
+                      </div>
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
