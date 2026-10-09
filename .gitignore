@@ -19,4 +19,4 @@ step1_search_pipeline/results.json
 !.env.example
 
 embedding_cache.json
-verdict_cache.json
+verdict_cache.jsonverdict_cache.json
