@@ -1,7 +1,8 @@
 import threading
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import Any
 
 
 @dataclass
@@ -12,9 +13,11 @@ class Review:
     status: str = "starting"          
     detail: str = ""                 
     created_at: str = field(
-        default_factory=lambda: datetime.utcnow().isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
     report_path: str | None = None
+    node_status: dict[str, Any] = field(default_factory=dict)
+    logs: list[dict[str, Any]] = field(default_factory=list)
 
 
 class ReviewStore:

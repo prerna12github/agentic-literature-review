@@ -1,8 +1,11 @@
 import json
 import logging
 from contextlib import asynccontextmanager
+from typing import Any
+from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel, Field
 
@@ -30,6 +33,14 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # --------------------------------------------------------------------------
 # Request / response models
@@ -54,6 +65,8 @@ class ReviewOut(BaseModel):
     detail: str
     report_path: str | None = None
     created_at: str
+    node_status: dict[str, Any] = Field(default_factory=dict)
+    logs: list[dict[str, Any]] = Field(default_factory=list)
 
 
 def _review_or_404(review_id: str):
@@ -132,8 +145,21 @@ def submit_decision(review_id: str, req: DecisionRequest):
         )
 
     if req.action == "abort":
-        store.update(review_id, status="aborted",
-                     detail="Aborted by human at checkpoint.")
+        logs = list(review.logs) if hasattr(review, "logs") and review.logs else []
+        node_status = dict(review.node_status) if hasattr(review, "node_status") and review.node_status else {}
+        node_status["human_checkpoint"] = {"status": "failed", "summary": "Aborted at checkpoint by user"}
+        logs.append({
+            "timestamp": datetime.now(timezone.utc).strftime("%H:%M:%S"),
+            "agent": "checkpoint",
+            "message": "Pipeline aborted by human operator."
+        })
+        store.update(
+            review_id,
+            status="aborted",
+            detail="Aborted by human at checkpoint.",
+            node_status=node_status,
+            logs=logs,
+        )
         return review
 
     if req.action == "remove" and not req.remove:
@@ -154,13 +180,16 @@ def submit_decision(review_id: str, req: DecisionRequest):
 def retry_review(review_id: str):
     review = _review_or_404(review_id)
 
-    if review.status != "failed":
-        raise HTTPException(409, f"Review is '{review.status}' — "
-                                 "only failed reviews can be retried.")
+    if review.status not in ("failed", "aborted"):
+        raise HTTPException(
+            409,
+            f"Review is '{review.status}' — only failed/aborted reviews can be retried.",
+        )
 
     store.update(review_id, status="running", detail="Retrying from checkpoint.")
     _retry_review_thread(review_id)
     return store.get(review_id)
+
 
 @app.get("/reviews/{review_id}/report", response_class=PlainTextResponse)
 def get_report(review_id: str):
@@ -168,8 +197,16 @@ def get_report(review_id: str):
 
     if review.status != "completed":
         raise HTTPException(
-            409, f"Review is '{review.status}' — no report yet."
+            409,
+            f"Review is '{review.status}' — report is only available once completed.",
         )
 
-    with open(review.report_path, "r") as f:
-        return PlainTextResponse(f.read(), media_type="text/markdown")
+    if not review.report_path:
+        raise HTTPException(404, "Report path not recorded on review")
+
+    import os
+    if not os.path.exists(review.report_path):
+        raise HTTPException(404, f"Report file not found: {review.report_path}")
+
+    with open(review.report_path, "r", encoding="utf-8") as f:
+        return f.read()

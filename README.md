@@ -1,8 +1,11 @@
-# 📚 Agentic Literature Review Assistant
 
-> A human-in-the-loop, multi-agent AI system that takes a specific research question and produces a fully cited literature review — with explicit contradiction detection between papers and page-level citation traceability for every claim.
+<div align="center">
 
-**Five specialized agents. One human checkpoint. Every claim grounded in an exact, traceable source passage.**
+# Agentic Literature Review Assistant
+
+**A human-in-the-loop, multi-agent system that turns a research question into a fully cited literature review.**
+
+Explicit contradiction detection between papers. Page-level citation traceability for every claim.
 
 ![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-orchestration-1C3C3C)
@@ -10,103 +13,123 @@
 ![Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?logo=google&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
----
-
-## 🎯 Why This Project Exists
-
-Tools like Elicit, Consensus, and Paperguide retrieve and summarize papers, but they share real, documented weaknesses:
-
-| Weakness in existing tools | How this project addresses it |
-|---|---|
-| ❌ No contradiction detection — disagreeing papers are silently blended | ⚔️ Dedicated **Contradiction Agent** groups claims by meaning and asks the LLM to judge *agree / conflict / unclear* — with an explanation of why |
-| ❌ Fully autonomous — one bad early decision silently ruins the output | ✋ Explicit **human checkpoint** baked into the architecture (LangGraph `interrupt()`): approve/remove papers before the expensive reading step |
-| ❌ Vague or fabricated citations | 🔗 **End-to-end provenance chain**: every claim carries `paper_id → chunk_id → page`, stamped in code (never trusted to the LLM), plus an anti-hallucination verification pass |
-| ❌ Generic field surveys instead of answers | 🎯 Every stage is optimized toward answering **your specific question** — and honestly reports when evidence is sparse or one-sided |
-
----
-
-## 🏗️ Architecture
-
-```
- Research question
-        │
-        ▼
-┌──────────────────┐   Semantic Scholar search (keyword-distilled),
-│ 🔍 Search Agent  │   PDF download with fallback chain
-│                  │   (S2 → Unpaywall → arXiv), page-tagged chunking
-└────────┬─────────┘
-         ▼
-┌──────────────────┐   LLM scores each paper's relevance (1–10)
-│ ⚖️ Filter Agent  │   with one-line reasons (native JSON mode)
-└────────┬─────────┘
-         ▼
-╔══════════════════╗
-║ ✋ HUMAN PAUSE    ║   LangGraph interrupt() — approve or remove
-╚════════╤═════════╝   papers. Works from CLI, web UI, or API.
-         ▼
-┌──────────────────┐   Extracts factual claims per paper in parallel
-│ 📖 Reader Agent  │   batches. Every claim is stamped with
-│                  │   paper_id + chunk_id + page IN CODE.
-└────────┬─────────┘
-         ▼
-┌──────────────────┐   Local embeddings (MiniLM) group similar
-│ ⚔️ Contradiction │   claims for free; LLM is spent only on
-│      Agent       │   verdicts. Verdicts cached on disk.
-└────────┬─────────┘
-         ▼
-┌──────────────────┐   Code-assigned citation keys, conflicts surfaced
-│ ✍️ Writer Agent  │   FIRST, quoted passages verified against the
-└────────┬─────────┘   evidence, markdown report with references.
-         ▼
-   final_report.md
-```
-
-**Orchestration:** LangGraph `StateGraph` with a shared typed state (`graph_state.py`). Each agent is a thin node wrapping the core logic — the same functions also run standalone.
-
----
-
-## 📸 Demo
+</div>
 
 <!-- Add a screenshot or GIF of the pipeline here, e.g.: -->
 <!-- ![Demo](docs/demo.gif) -->
 
 ---
 
-## ✨ Key Features
+## Table of Contents
 
-- ⚔️ **Contradiction detection** — cross-paper disagreement is actively hunted and explained, then required reading for the Writer Agent (conflicts appear prominently in the report)
-- ✋ **Human-in-the-loop as architecture** — the checkpoint is a LangGraph `interrupt()`: the graph freezes, control passes to an external decision-maker (CLI / frontend / API), and resumes via `Command(resume=...)`
-- 🔗 **Citation traceability end-to-end** — chunk IDs stamped at extraction survive all five stages; the Writer cites `(Author, Year, p. X)` with an exact source chunk behind it
-- 🛡️ **Anti-hallucination checks** — citation keys assigned in code, not by the LLM; quoted passages verified against the input evidence
-- 💸 **Cost-engineered** — local sentence-transformer embeddings for retrieval (free, unlimited), LLM calls reserved for judgment; caching at three layers (PDFs, per-paper claims, verdicts) makes repeat reviews nearly free
-- 🧗 **Resilience** — retry with exponential backoff on transient LLM errors (429/503), multi-source open-access PDF fallback, keyword distillation + fallback ladder for long natural-language questions
-- 🌐 **Full API + frontend** — FastAPI exposes the pipeline; the React frontend shows a live agent timeline, streaming activity console, and a checkpoint approval screen
-- ⚡ **Parallelized** — concurrent PDF downloads and claim extraction, sized to respect free-tier rate limits; reference-section chunk pruning cuts LLM calls by ~40–60%
+- [Overview](#overview)
+- [Motivation](#motivation)
+- [Architecture](#architecture)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [API Reference](#api-reference)
+- [Project Structure](#project-structure)
+- [Design Decisions](#design-decisions)
+- [Limitations and Roadmap](#limitations-and-roadmap)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
 
 ---
 
-## 🛠️ Tech Stack
+## Overview
+
+The Agentic Literature Review Assistant takes a specific research question and produces a cited literature review through five specialized agents and one human checkpoint. Every claim in the final report is grounded in an exact, traceable source passage.
+
+| Stage | Agent | Responsibility |
+|---|---|---|
+| 1 | Search | Find papers, download PDFs, and produce page-tagged chunks |
+| 2 | Filter | Score each paper's relevance to the question |
+| ✋ | Human checkpoint | Approve or remove papers before the expensive reading step |
+| 3 | Reader | Extract factual claims with full provenance |
+| 4 | Contradiction | Detect agreement and conflict across papers |
+| 5 | Writer | Synthesize a verified, cited markdown report |
+
+## Motivation
+
+Tools such as Elicit, Consensus, and Paperguide retrieve and summarize papers, but they share documented weaknesses. This project addresses each one directly.
+
+| Weakness in existing tools | Approach in this project |
+|---|---|
+| No contradiction detection: disagreeing papers are silently blended | A dedicated **Contradiction Agent** groups claims by meaning and asks the LLM to judge *agree / conflict / unclear*, with an explanation |
+| Fully autonomous: one bad early decision silently ruins the output | An explicit **human checkpoint** built into the architecture (LangGraph `interrupt()`) lets you approve or remove papers before the reading step |
+| Vague or fabricated citations | An **end-to-end provenance chain**: every claim carries `paper_id → chunk_id → page`, stamped in code (never by the LLM), plus an anti-hallucination verification pass |
+| Generic field surveys instead of answers | Every stage is optimized toward **your specific question**, and the report states plainly when evidence is sparse or one-sided |
+
+## Architecture
+
+```text
+ Research question
+        │
+        ▼
+┌──────────────────┐   Semantic Scholar search (keyword-distilled),
+│  Search Agent    │   PDF download with fallback chain
+│                  │   (S2 → Unpaywall → arXiv), page-tagged chunking
+└────────┬─────────┘
+         ▼
+┌──────────────────┐   LLM scores each paper's relevance (1–10)
+│  Filter Agent    │   with one-line reasons (native JSON mode)
+└────────┬─────────┘
+         ▼
+╔══════════════════╗
+║  HUMAN PAUSE     ║   LangGraph interrupt(): approve or remove
+╚════════╤═════════╝   papers. Works from CLI, web UI, or API.
+         ▼
+┌──────────────────┐   Extracts factual claims per paper in parallel
+│  Reader Agent    │   batches. Every claim is stamped with
+│                  │   paper_id + chunk_id + page IN CODE.
+└────────┬─────────┘
+         ▼
+┌──────────────────┐   Local embeddings (MiniLM) group similar
+│  Contradiction   │   claims for free; the LLM is spent only on
+│  Agent           │   verdicts. Verdicts are cached on disk.
+└────────┬─────────┘
+         ▼
+┌──────────────────┐   Code-assigned citation keys, conflicts surfaced
+│  Writer Agent    │   first, quoted passages verified against the
+└────────┬─────────┘   evidence, markdown report with references.
+         ▼
+   final_report.md
+```
+
+**Orchestration:** a LangGraph `StateGraph` with a shared typed state (`graph_state.py`). Each agent is a thin node wrapping core logic; the same functions also run standalone.
+
+## Key Features
+
+- **Contradiction detection:** cross-paper disagreement is actively identified and explained, then required reading for the Writer Agent so conflicts appear prominently in the report.
+- **Human-in-the-loop by design:** the checkpoint is a LangGraph `interrupt()`. The graph freezes, control passes to an external decision-maker (CLI, frontend, or API), and execution resumes via `Command(resume=...)`.
+- **End-to-end citation traceability:** chunk IDs stamped at extraction survive all five stages. The Writer cites `(Author, Year, p. X)` with an exact source chunk behind it.
+- **Anti-hallucination checks:** citation keys are assigned in code, not by the LLM, and quoted passages are verified against the input evidence.
+- **Cost-engineered:** local sentence-transformer embeddings handle retrieval (free, unlimited), and LLM calls are reserved for judgment. Caching at three layers (PDFs, per-paper claims, verdicts) makes repeat reviews nearly free.
+- **Resilient:** exponential-backoff retries on transient LLM errors (429/503), a multi-source open-access PDF fallback, and keyword distillation with a fallback ladder for long natural-language questions.
+- **Full API and frontend:** FastAPI exposes the pipeline, and the React frontend provides a live agent timeline, a streaming activity console, and a checkpoint approval screen.
+- **Parallelized:** concurrent PDF downloads and claim extraction, sized to respect free-tier rate limits. Reference-section chunk pruning cuts LLM calls by roughly 40–60%.
+
+## Tech Stack
 
 | Layer | Tools |
 |---|---|
-| Agents & pipeline | Python, LangGraph (`StateGraph`, `interrupt`/`Command`) |
+| Agents and pipeline | Python, LangGraph (`StateGraph`, `interrupt` / `Command`) |
 | LLM | Google Gemini (structured JSON output) |
 | Embeddings | sentence-transformers (`all-MiniLM-L6-v2`, local) |
-| Paper search | Semantic Scholar API + Unpaywall + arXiv |
+| Paper search | Semantic Scholar API, Unpaywall, arXiv |
 | PDF processing | PyMuPDF (page-tagged chunking) |
 | API | FastAPI, Uvicorn, Pydantic |
-| Frontend | React + Tailwind CSS (live pipeline visualization, checkpoint UI) |
-| Persistence | In-memory store + LangGraph `MemorySaver` (SQLite drop-in planned) |
+| Frontend | React, Tailwind CSS |
+| Persistence | In-memory store and LangGraph `MemorySaver` (SQLite upgrade planned) |
 
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Python 3.12+
-- A Gemini API key (free tier works) — [aistudio.google.com](https://aistudio.google.com)
-- *(Optional)* Semantic Scholar API key
+- A Gemini API key (the free tier works): [aistudio.google.com](https://aistudio.google.com)
+- *(Optional)* A Semantic Scholar API key
 
 ### Installation
 
@@ -134,12 +157,12 @@ UNPAYWALL_EMAIL=you@example.com          # any real email (Unpaywall requirement
 
 ```bash
 python run_pipeline.py
-# → enter a research question
-# → watch agents run, approve papers at the checkpoint
-# → final_report.md is written
+# Enter a research question
+# Watch the agents run and approve papers at the checkpoint
+# final_report.md is written on completion
 ```
 
-### Run the API + frontend
+### Run the API and frontend
 
 ```bash
 uvicorn api.main:app --reload
@@ -147,45 +170,41 @@ uvicorn api.main:app --reload
 # Frontend:  http://localhost:8000  (or the React dev server)
 ```
 
----
-
-## 🔌 API Reference
+## API Reference
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `POST` | `/reviews` | Start a review (runs in background) |
+| `POST` | `/reviews` | Start a review (runs in the background) |
 | `GET` | `/reviews` | List all reviews |
-| `GET` | `/reviews/{id}` | Review status + node status + activity logs |
+| `GET` | `/reviews/{id}` | Review status, node status, and activity logs |
 | `GET` | `/reviews/{id}/pending` | Checkpoint payload (ranked papers awaiting approval) |
-| `POST` | `/reviews/{id}/decision` | Submit decision: `approve_all` / `remove` / `abort` |
+| `POST` | `/reviews/{id}/decision` | Submit a decision: `approve_all`, `remove`, or `abort` |
 | `POST` | `/reviews/{id}/retry` | Resume a failed review from its last checkpoint |
-| `GET` | `/reviews/{id}/report` | Final markdown report |
+| `GET` | `/reviews/{id}/report` | Fetch the final markdown report |
 
 ### Example flow
 
 ```bash
-# 1. start
+# 1. Start a review
 curl -X POST localhost:8000/reviews -H "Content-Type: application/json" \
   -d '{"query": "How does RAG reduce hallucination in LLMs?"}'
 
-# 2. poll until status == "awaiting_approval"
+# 2. Poll until status == "awaiting_approval"
 curl localhost:8000/reviews/rv-abc123
 
-# 3. inspect ranked papers, then approve (or remove some)
+# 3. Inspect the ranked papers, then approve (or remove some)
 curl -X POST localhost:8000/reviews/rv-abc123/decision \
   -H "Content-Type: application/json" -d '{"action": "approve_all"}'
 
-# 4. poll until "completed", then fetch the report
+# 4. Poll until "completed", then fetch the report
 curl localhost:8000/reviews/rv-abc123/report
 ```
 
-> The `interrupt()` checkpoint is the API boundary: the server never calls `input()` — the client decides, through HTTP.
+> The `interrupt()` checkpoint is the API boundary. The server never calls `input()`; the client decides over HTTP.
 
----
+## Project Structure
 
-## 📂 Project Structure
-
-```
+```text
 ├── search_pipeline/        # Step 1: search, download (fallback chain), extract
 │   ├── search.py           # Semantic Scholar search + keyword handling
 │   ├── download.py         # PDF downloads: S2 → Unpaywall → arXiv, idempotent
@@ -201,39 +220,41 @@ curl localhost:8000/reviews/rv-abc123/report
 │   ├── main.py             # Endpoints
 │   ├── review_store.py     # Review registry
 │   └── pipeline_runner.py  # Background graph execution + resume
-└── bruno/                  # API test collection (Bruno)
+├── bruno/                  # API test collection (Bruno)
+├── LICENSE
+└── README.md
 ```
 
----
+## Design Decisions
 
-## ⚙️ Design Decisions Worth Knowing
+- **Local embeddings for retrieval, LLM for reasoning.** Claim grouping uses a free local MiniLM model, and Gemini is spent only where judgment matters. This is a deliberate cost and latency split.
+- **Provenance is stamped in code, never by the LLM.** Models read chunk IDs and write claims, but `paper_id`, `paper_title`, and citation keys are attached programmatically.
+- **Fail loudly and early.** Zero search results, empty approvals, and missing API keys all raise immediately instead of flowing silently into downstream agents.
+- **Caching everywhere.** PDFs are skipped if already on disk, and extracted claims and LLM verdicts are keyed by content hash, so re-runs and threshold tuning cost nothing.
+- **Parallelism sized to rate limits.** Bounded worker pools (not maxed out) let free-tier quotas absorb the load, and the retry wrapper catches the rest.
 
-- **Local embeddings for retrieval, LLM for reasoning** — grouping claims is done with a free local MiniLM model; Gemini is spent only where judgment matters. This is a deliberate cost/latency split.
-- **Provenance is stamped in code, never by the LLM** — models are trusted to read chunk IDs and write claims, but `paper_id` / `paper_title` / citation keys are attached programmatically.
-- **Fail loudly, early** — zero search results, empty approvals, and missing API keys all raise immediately instead of flowing silently into downstream agents.
-- **Caching everywhere** — PDFs are skipped if on disk; extracted claims and LLM verdicts are keyed by content hash, so re-runs and threshold tuning cost nothing.
-- **Parallelism sized to rate limits** — bounded worker pools (not maxed-out) so free-tier quotas absorb the load; the retry wrapper catches the rest.
+## Limitations and Roadmap
 
----
+### Known limitations
 
-## ⚠️ Limitations & Roadmap
-
-- Review state and checkpoints are currently in-memory — a server restart loses paused reviews. (`ReviewStore` → SQLite table + `MemorySaver` → `SqliteSaver` are drop-in upgrades.)
+- Review state and checkpoints are in-memory, so a server restart loses paused reviews. (`ReviewStore` → SQLite table and `MemorySaver` → `SqliteSaver` are drop-in upgrades.)
 - Contradiction verdicts are LLM-judged (probabilistic), not formal logical checks.
-- Claim grouping uses greedy leader-clustering — order-dependent; centroid-based clustering is a future improvement.
-- Open-access only: paywalled papers are kept as abstract-only candidates (marked honestly, still usable by the Filter Agent).
-- **Planned:** SQLite persistence · resume-scan for interrupted reviews · per-review audit trail · evaluation harness (contradiction detection precision vs. human labels).
+- Claim grouping uses greedy leader-clustering, which is order-dependent. Centroid-based clustering is a future improvement.
+- Only open-access papers are read in full. Paywalled papers are kept as abstract-only candidates, marked as such, and remain usable by the Filter Agent.
 
----
+### Planned
 
-## 🙏 Acknowledgments
+- [ ] SQLite persistence
+- [ ] Resume-scan for interrupted reviews
+- [ ] Per-review audit trail
+- [ ] Evaluation harness (contradiction-detection precision against human labels)
+
+## Acknowledgments
 
 - [Semantic Scholar](https://www.semanticscholar.org/product/api) and [Unpaywall](https://unpaywall.org/products/api) for open research APIs
 - [LangGraph](https://github.com/langchain-ai/langgraph) for interruptible agent orchestration
-- Inspired by the gaps observed in Elicit, Consensus, and similar tools
+- Inspired by gaps observed in Elicit, Consensus, and similar tools
 
----
-
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
