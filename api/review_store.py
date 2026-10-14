@@ -1,55 +1,87 @@
+import sqlite3
 import threading
 import uuid
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from typing import Any
+from datetime import datetime
 
+DB_FILE = "reviews.db"
 
-@dataclass
-class Review:
-    review_id: str
-    thread_id: str
-    query: str
-    status: str = "starting"          
-    detail: str = ""                 
-    created_at: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
-    report_path: str | None = None
-    node_status: dict[str, Any] = field(default_factory=dict)
-    logs: list[dict[str, Any]] = field(default_factory=list)
+_SCHEMA = """
+CREATE TABLE IF NOT EXISTS reviews (
+    review_id   TEXT PRIMARY KEY,
+    thread_id   TEXT NOT NULL,
+    query       TEXT NOT NULL,
+    status      TEXT NOT NULL,
+    detail      TEXT DEFAULT '',
+    report_path TEXT,
+    created_at  TEXT NOT NULL
+)
+"""
 
 
 class ReviewStore:
-    def __init__(self):
-        self._reviews: dict[str, Review] = {}
+    def __init__(self, db_file: str = DB_FILE):
         self._lock = threading.Lock()
+        self._conn = sqlite3.connect(db_file, check_same_thread=False)
+        self._conn.row_factory = sqlite3.Row
+        self._conn.execute(_SCHEMA)
+        self._conn.commit()
 
-    def create(self, query: str) -> Review:
-        review = Review(
-            review_id=f"rv-{uuid.uuid4().hex[:8]}",
-            thread_id=f"thread-{uuid.uuid4().hex[:12]}",
-            query=query,
-        )
+    def _to_review(self, row) -> dict:
+        return {
+            "review_id": row["review_id"],
+            "thread_id": row["thread_id"],
+            "query": row["query"],
+            "status": row["status"],
+            "detail": row["detail"],
+            "report_path": row["report_path"],
+            "created_at": row["created_at"],
+        }
+
+    def create(self, query: str) -> dict:
+        review = {
+            "review_id": f"rv-{uuid.uuid4().hex[:8]}",
+            "thread_id": f"thread-{uuid.uuid4().hex[:12]}",
+            "query": query,
+            "status": "starting",
+            "detail": "",
+            "report_path": None,
+            "created_at": datetime.utcnow().isoformat(),
+        }
         with self._lock:
-            self._reviews[review.review_id] = review
+            self._conn.execute(
+                "INSERT INTO reviews VALUES (:review_id, :thread_id, :query, "
+                ":status, :detail, :report_path, :created_at)",
+                review,
+            )
+            self._conn.commit()
         return review
 
-    def get(self, review_id: str) -> Review | None:
+    def get(self, review_id: str) -> dict | None:
         with self._lock:
-            return self._reviews.get(review_id)
+            row = self._conn.execute(
+                "SELECT * FROM reviews WHERE review_id = ?", (review_id,)
+            ).fetchone()
+        return self._to_review(row) if row else None
 
-    def all(self) -> list[Review]:
+    def all(self) -> list[dict]:
         with self._lock:
-            return list(self._reviews.values())
+            rows = self._conn.execute(
+                "SELECT * FROM reviews ORDER BY created_at DESC"
+            ).fetchall()
+        return [self._to_review(r) for r in rows]
 
-    def update(self, review_id: str, **fields) -> Review | None:
+    def update(self, review_id: str, **fields) -> dict | None:
+        allowed = {"status", "detail", "report_path"}
+        bad = [k for k in fields if k not in allowed]
+        if bad:
+            raise ValueError(f"Cannot update fields: {bad}")
+        sets = ", ".join(f"{k} = :{k}" for k in fields)
         with self._lock:
-            review = self._reviews.get(review_id)
-            if review is None:
-                return None
-            for k, v in fields.items():
-                setattr(review, k, v)
-            return review
+            self._conn.execute(
+                f"UPDATE reviews SET {sets} WHERE review_id = :rid",
+                {**fields, "rid": review_id},
+            )
+            self._conn.commit()
+        return self.get(review_id)
 
 store = ReviewStore()
