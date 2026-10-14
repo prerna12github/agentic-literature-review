@@ -1,4 +1,5 @@
 import logging
+import sqlite3
 import threading
 from datetime import datetime, timezone
 
@@ -6,7 +7,7 @@ from langgraph.types import Command
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 from pipeline_graph import build_pipeline_graph
-from api.review_store import store, Review
+from api.review_store import store
 
 log = logging.getLogger(__name__)
 
@@ -15,14 +16,10 @@ _graph_lock = threading.Lock()
 
 
 def _get_graph():
-    _graph = None
-    def _get_graph():
         global _graph
         if _graph is None:
-            saver = SqliteSaver.from_conn_string(
-                "checkpoints.db",
-                check_same_thread=False,
-            )
+            conn = sqlite3.connect("checkpoints.db", check_same_thread=False)
+            saver = SqliteSaver(conn)
             from pipeline_graph import build_pipeline_graph
             _graph = build_pipeline_graph(checkpointer=saver)
         return _graph

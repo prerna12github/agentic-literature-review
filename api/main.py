@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field,ConfigDict
 
 from api.review_store import store
 from api.pipeline_runner import start_review_thread, resume_review_thread, _retry_review_thread
@@ -42,9 +42,6 @@ app.add_middleware(
 )
 
 
-# --------------------------------------------------------------------------
-# Request / response models
-# --------------------------------------------------------------------------
 class ReviewRequest(BaseModel):
     query: str = Field(..., min_length=10,
                        description="The research question")
@@ -59,6 +56,7 @@ class DecisionRequest(BaseModel):
 
 
 class ReviewOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     review_id: str
     query: str
     status: str
