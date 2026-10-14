@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # Agentic Literature Review Assistant
@@ -121,7 +120,7 @@ Tools such as Elicit, Consensus, and Paperguide retrieve and summarize papers, b
 | PDF processing | PyMuPDF (page-tagged chunking) |
 | API | FastAPI, Uvicorn, Pydantic |
 | Frontend | React, Tailwind CSS |
-| Persistence | In-memory store and LangGraph `MemorySaver` (SQLite upgrade planned) |
+| Persistence | SQLite (reviews + LangGraph checkpoints — survive restarts) |
 
 ## Getting Started
 
@@ -219,8 +218,7 @@ curl localhost:8000/reviews/rv-abc123/report
 ├── api/                    # FastAPI layer + frontend
 │   ├── main.py             # Endpoints
 │   ├── review_store.py     # Review registry
-│   └── pipeline_runner.py  # Background graph execution + resume
-├── bruno/                  # API test collection (Bruno)
+│   └── pipeline_runner.py  # Background graph execution + resume               
 ├── LICENSE
 └── README.md
 ```
@@ -237,14 +235,12 @@ curl localhost:8000/reviews/rv-abc123/report
 
 ### Known limitations
 
-- Review state and checkpoints are in-memory, so a server restart loses paused reviews. (`ReviewStore` → SQLite table and `MemorySaver` → `SqliteSaver` are drop-in upgrades.)
 - Contradiction verdicts are LLM-judged (probabilistic), not formal logical checks.
 - Claim grouping uses greedy leader-clustering, which is order-dependent. Centroid-based clustering is a future improvement.
 - Only open-access papers are read in full. Paywalled papers are kept as abstract-only candidates, marked as such, and remain usable by the Filter Agent.
 
 ### Planned
 
-- [ ] SQLite persistence
 - [ ] Resume-scan for interrupted reviews
 - [ ] Per-review audit trail
 - [ ] Evaluation harness (contradiction-detection precision against human labels)
