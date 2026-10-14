@@ -20,3 +20,6 @@ step1_search_pipeline/results.json
 
 embedding_cache.json
 verdict_cache.jsonverdict_cache.json
+reviews.db
+checkpoints.db
+*.db
